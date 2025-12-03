@@ -13,6 +13,8 @@ MANIFEST_FILE="${PROJECT_ROOT}/.claude/specs-manifest.yaml"
 VIOLATIONS_FILE="${PROJECT_ROOT}/.claude/tdd-violations.json"
 SESSION_LOG="${PROJECT_ROOT}/.claude/tdd-session-log.md"
 SETTINGS_FILE="${PROJECT_ROOT}/.claude/tdd-plugin.local.md"
+CURRENT_FEATURE_FILE="${PROJECT_ROOT}/.claude/current-feature.txt"
+ADRS_DIR="${PROJECT_ROOT}/docs/adrs"
 
 # Helper function for logging
 log() {
@@ -41,7 +43,7 @@ fi
 # Read manifest data
 PROJECT_NAME="unknown"
 if [[ -f "$MANIFEST_FILE" ]]; then
-    PROJECT_NAME=$(grep -oP 'name:\s*\K.*' "$MANIFEST_FILE" 2>/dev/null | head -1 || echo "unknown")
+    PROJECT_NAME=$(grep -oP 'project:\s*\K.*' "$MANIFEST_FILE" 2>/dev/null | head -1 || echo "unknown")
 fi
 
 # Count violations
@@ -50,6 +52,23 @@ UNRESOLVED_VIOLATIONS=0
 if [[ -f "$VIOLATIONS_FILE" ]] && command -v jq &>/dev/null; then
     TOTAL_VIOLATIONS=$(jq '.total // 0' "$VIOLATIONS_FILE" 2>/dev/null || echo "0")
     UNRESOLVED_VIOLATIONS=$(jq '[.history[]? | select(.resolved == false)] | length' "$VIOLATIONS_FILE" 2>/dev/null || echo "0")
+fi
+
+# Read current feature
+CURRENT_FEATURE="None"
+if [[ -f "$CURRENT_FEATURE_FILE" ]]; then
+    CURRENT_FEATURE=$(cat "$CURRENT_FEATURE_FILE" 2>/dev/null || echo "None")
+fi
+
+# Count features and ADRs
+FEATURE_COUNT=0
+if [[ -d "${PROJECT_ROOT}/docs/specs" ]]; then
+    FEATURE_COUNT=$(find "${PROJECT_ROOT}/docs/specs" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l || echo "0")
+fi
+
+ADR_COUNT=0
+if [[ -d "$ADRS_DIR" ]]; then
+    ADR_COUNT=$(find "$ADRS_DIR" -name "*.md" -type f 2>/dev/null | wc -l || echo "0")
 fi
 
 # Generate the TDD section
@@ -61,68 +80,97 @@ TDD_SECTION=$(cat << EOF
 
 **Last Updated**: $(date '+%Y-%m-%d %H:%M:%S')
 
-### Project Configuration
-- **Project**: ${PROJECT_NAME}
-- **Enforcement Mode**: ${ENFORCEMENT_LEVEL}
-- **TDD Violations**: ${UNRESOLVED_VIOLATIONS} unresolved (${TOTAL_VIOLATIONS} total)
+### Project Overview
+| Metric | Value |
+|--------|-------|
+| Project | ${PROJECT_NAME} |
+| Enforcement | ${ENFORCEMENT_LEVEL} |
+| Features | ${FEATURE_COUNT} documented |
+| ADRs | ${ADR_COUNT} recorded |
+| Violations | ${UNRESOLVED_VIOLATIONS} unresolved |
+| Active Feature | ${CURRENT_FEATURE} |
 
-### Key Documentation Locations
+### Quick Commands
 
-**Specifications & Requirements**
-- Feature specs: \`docs/specs/<feature-name>/\`
-- PRD template: \`docs/specs/prd-template.md\`
-- Technical specs: \`docs/specs/technical-spec-template.md\`
-- Manifest: \`.claude/specs-manifest.yaml\`
+| Command | Purpose |
+|---------|---------|
+| \`/tdd <feature>\` | Full TDD workflow for new features |
+| \`/tdd:fix <issue>\` | Quick fix with test-first approach |
+| \`/tdd:check\` | Compliance and coverage report |
+| \`/tdd:adr <title>\` | Create architecture decision record |
+| \`/tdd:init\` | Initialize TDD in new project |
 
-**Testing & Validation**
-- Test framework: Auto-detected (check \`.claude/tdd-plugin.local.md\`)
-- Coverage targets: See \`.claude/tdd-plugin.local.md\`
-- Violations log: \`.claude/tdd-violations.json\`
+### Key Locations
 
-**Session Data**
-- Current feature: \`.claude/current-feature.txt\` (if exists)
-- Session log: \`.claude/tdd-session-log.md\`
-- Plugin settings: \`.claude/tdd-plugin.local.md\`
+| Type | Path |
+|------|------|
+| Feature specs | \`docs/specs/<feature>/\` |
+| ADRs | \`docs/adrs/\` |
+| Settings | \`.claude/tdd-plugin.local.md\` |
+| Manifest | \`.claude/specs-manifest.yaml\` |
 
-### Recent Activity
+### TDD Principles
+
+1. **Specs First** - Document requirements before coding
+2. **Tests First** - Write failing tests before implementation
+3. **Minimal Code** - Only implement what tests require
+4. **Refactor** - Improve code while keeping tests green
+5. **Document Decisions** - Use ADRs for significant choices
 
 EOF
 )
 
-# Add recent session log summary if available
-if [[ -f "$SESSION_LOG" ]]; then
-    TDD_SECTION+="**Last Session Report**
-\`\`\`
-$(tail -20 "$SESSION_LOG" 2>/dev/null || echo "No recent activity")
-\`\`\`
+# Add current feature details if active
+if [[ "$CURRENT_FEATURE" != "None" && -d "${PROJECT_ROOT}/docs/specs/${CURRENT_FEATURE}" ]]; then
+    TDD_SECTION+="
+### Active Feature: ${CURRENT_FEATURE}
 
+- PRD: \`docs/specs/${CURRENT_FEATURE}/prd.md\`
+- Tech Spec: \`docs/specs/${CURRENT_FEATURE}/technical-spec.md\`
+- Requirements: \`docs/specs/${CURRENT_FEATURE}/requirements.md\`
+
+Continue with: \`/tdd\`
 "
 fi
 
-# Add quick commands
-TDD_SECTION+="### Quick Commands
+# Add recent ADRs if any
+if [[ $ADR_COUNT -gt 0 ]]; then
+    RECENT_ADRS=$(find "$ADRS_DIR" -name "*.md" -type f -printf "%T@ %f\n" 2>/dev/null | sort -rn | head -3 | cut -d' ' -f2 | sed 's/^/- /')
+    if [[ -n "$RECENT_ADRS" ]]; then
+        TDD_SECTION+="
+### Recent ADRs
 
-- \`/tdd-plugin:status\` - Check current TDD workflow status
-- \`/tdd-plugin:run-cycle\` - Run guided TDD cycle
-- \`/tdd-plugin:start-feature <name>\` - Begin new feature with spec
-- \`/tdd-plugin:checkpoint\` - Validate current state
+${RECENT_ADRS}
 
-### How to Use This Context
+See all: \`docs/adrs/\`
+"
+    fi
+fi
 
-When starting a new session:
-1. Check \`.claude/current-feature.txt\` for active feature
-2. Review recent violations in \`.claude/tdd-violations.json\`
-3. Read feature spec from \`docs/specs/<feature>/\`
-4. Follow TDD workflow: Spec → Test → Implement
-
+TDD_SECTION+="
 ---
 "
 
 # Update or append TDD section in CLAUDE.md
 if grep -q "## TDD Workflow Status" "$CLAUDE_MD"; then
-    # Replace existing TDD section
-    # Use perl for multi-line replacement
-    perl -i -0pe 's/---\s*\n## TDD Workflow Status.*?(?=\n---|\Z)/'"$(echo "$TDD_SECTION" | sed 's/\\/\\\\/g; s/\//\\\//g; s/&/\\&/g')"'/s' "$CLAUDE_MD"
+    # Replace existing TDD section using a temp file approach (more reliable than perl)
+    TEMP_FILE=$(mktemp)
+
+    # Extract content before TDD section
+    sed -n '1,/^---$/p' "$CLAUDE_MD" | head -n -1 > "$TEMP_FILE"
+
+    # Check if there's content before the TDD section
+    if [[ $(wc -l < "$TEMP_FILE") -eq 0 ]]; then
+        # TDD section is at the start, keep any header content
+        head -n 5 "$CLAUDE_MD" > "$TEMP_FILE"
+    fi
+
+    # Append new TDD section
+    echo "$TDD_SECTION" >> "$TEMP_FILE"
+
+    # Move temp file to CLAUDE.md
+    mv "$TEMP_FILE" "$CLAUDE_MD"
+
     log "Updated existing TDD section"
 else
     # Append new TDD section

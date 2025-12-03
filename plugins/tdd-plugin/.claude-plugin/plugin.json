@@ -12,7 +12,9 @@
     "testing",
     "workflow",
     "coverage",
-    "specification"
+    "specification",
+    "adr",
+    "architecture-decision-records"
   ],
   "license": "MIT"
 }

@@ -31,7 +31,19 @@ Guides you through:
 5. **Refactor** - Improve code quality (REFACTOR)
 6. **Summary** - Document completion
 
-### 3. Check Compliance
+### 3. Fix Bugs or Make Small Changes
+```
+/tdd:fix password validation rejects valid special characters
+```
+Lightweight test-first workflow for bug fixes and small improvements.
+
+### 4. Document Architectural Decisions
+```
+/tdd:adr Use Redis for session storage
+```
+Creates a structured ADR in `docs/adrs/`.
+
+### 5. Check Compliance
 ```
 /tdd:check
 ```
@@ -41,7 +53,9 @@ Generates report on specs, tests, and coverage.
 
 | Command | Description |
 |---------|-------------|
-| `/tdd <feature>` | Full TDD workflow for feature |
+| `/tdd <feature>` | Full TDD workflow for new features |
+| `/tdd:fix <issue>` | Lightweight TDD for bug fixes and small changes |
+| `/tdd:adr <title>` | Create Architecture Decision Record |
 | `/tdd:init` | Initialize project structure |
 | `/tdd:check` | Compliance and coverage report |
 
@@ -79,6 +93,54 @@ Runs a phased workflow similar to feature-dev, but with TDD methodology:
 **Phase 6: Summary**
 - Update manifest
 - Report completion
+
+### The /tdd:fix Command
+
+Lightweight workflow for bug fixes, small enhancements, and iterative development. Skips specifications and goes straight to test → implement → verify.
+
+**Use for**:
+- Bug fixes
+- Small enhancements to existing features
+- Code review findings
+- Refactoring with characterization tests
+
+**Phases**:
+1. **Understand** - Identify the issue and affected code
+2. **Write Failing Test** - Create test that reproduces/verifies the behavior
+3. **Implement Fix** - Make minimal changes to pass the test
+4. **Verify** - Run full test suite
+
+```
+/tdd:fix users can't login with special characters in password
+
+→ Understand: Password validation regex rejects valid special chars
+→ Test: it('accepts passwords with !@#$% characters')
+→ Fix: Update regex in validatePassword()
+→ Verify: All tests pass
+```
+
+### The /tdd:adr Command
+
+Creates Architecture Decision Records to document significant technical decisions.
+
+**Use for**:
+- Technology choices (frameworks, databases)
+- Architectural patterns
+- Breaking API changes
+- Security decisions
+- Deviations from established patterns
+
+**Output**: `docs/adrs/NNNN-<slug>.md`
+
+```
+/tdd:adr Use PostgreSQL for primary database
+
+→ Gathered context and options
+→ Created: docs/adrs/0001-use-postgresql-for-primary-database.md
+→ Status: proposed
+```
+
+ADR lifecycle: `proposed` → `accepted` → (`deprecated` | `superseded`)
 
 ### Integration with feature-dev
 
@@ -121,15 +183,19 @@ After initialization:
 ```
 project-root/
 ├── docs/
-│   └── specs/
-│       └── <feature-name>/
-│           ├── prd.md
-│           ├── technical-spec.md
-│           └── requirements.md
+│   ├── specs/
+│   │   └── <feature-name>/
+│   │       ├── prd.md
+│   │       ├── technical-spec.md
+│   │       └── requirements.md
+│   └── adrs/
+│       ├── 0001-initial-architecture.md
+│       └── ...
 ├── .claude/
 │   ├── specs-manifest.yaml
 │   ├── tdd-plugin.local.md
 │   └── current-feature.txt
+├── CLAUDE.md              # Project context (auto-updated)
 └── tests/
     └── (your test files)
 ```
@@ -183,6 +249,7 @@ Templates in `templates/`:
 - `technical-spec-template.md` - Technical Specification
 - `functional-requirements-template.md` - Functional Requirements
 - `test-case-template.md` - Test Case Template
+- `adr-template.md` - Architecture Decision Record (full template)
 
 ## Language Support
 
@@ -240,9 +307,15 @@ If upgrading from the previous version:
    - `/tdd:checkpoint` → `/tdd:check`
    - `/tdd:init-project` → `/tdd:init`
 
-2. Skills consolidated into `tdd-practices`
+2. New commands added:
+   - `/tdd:fix` - Lightweight workflow for bug fixes
+   - `/tdd:adr` - Architecture Decision Records
 
-3. Hooks simplified (removed UserPromptSubmit, PostToolUse)
+3. Skills consolidated into `tdd-practices`
+
+4. Hooks simplified (removed UserPromptSubmit, PostToolUse)
+
+5. CLAUDE.md now auto-created and updated with project context
 
 ## License
 
