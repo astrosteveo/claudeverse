@@ -7,50 +7,24 @@
     {
       "name": "tdd-plugin",
       "source": "./plugins/tdd-plugin",
-      "description": "Comprehensive Test-Driven Development workflow enforcement with automated hooks, specification templates, and session context management. Ensures tests are written before implementation with configurable enforcement modes (advisory, strict, graduated).",
-      "version": "1.0.0",
+      "description": "Enforces Spec and Test Driven Development workflows with PRD creation, technical specifications, functional requirements documentation, test-first development, and automated validation hooks",
+      "version": "0.1.0",
       "author": {
-        "name": "astrosteveo"
+        "name": "Claude Code Community",
+        "email": "community@claude.ai"
       },
       "license": "MIT",
-      "keywords": ["tdd", "testing", "workflow", "test-driven-development", "specs", "quality", "hooks", "automation"],
-      "category": "development",
-      "commands": [
-        "./status.md",
-        "./run-cycle.md",
-        "./start-feature.md",
-        "./checkpoint.md",
-        "./init-project.md",
-        "./create-test.md",
-        "./create-spec.md",
-        "./create-prd.md",
-        "./build-feature.md"
+      "keywords": [
+        "tdd",
+        "test-driven-development",
+        "specification",
+        "testing",
+        "workflow",
+        "quality",
+        "documentation",
+        "coverage"
       ],
-      "agents": [
-        "./coverage-analyzer.md",
-        "./spec-writer.md",
-        "./test-generator.md",
-        "./workflow-orchestrator.md"
-      ],
-      "skills": [
-        "./tdd-workflow.md",
-        "./test-patterns.md",
-        "./spec-writing.md",
-        "./coverage-analysis.md",
-        "./adr-practices.md"
-      ]
-    },
-    {
-      "name": "feature-dev-memory",
-      "source": "./.claude/plugins/feature-dev-memory",
-      "description": "Automatically captures and preserves architecture decisions and exploration notes when using feature-dev agents. Ensures context is maintained across sessions through SubagentStop hooks.",
-      "version": "1.0.0",
-      "author": {
-        "name": "astrosteveo"
-      },
-      "license": "MIT",
-      "keywords": ["memory", "feature-dev", "architecture", "context", "persistence"],
-      "category": "productivity"
+      "category": "development"
     }
   ]
 }
