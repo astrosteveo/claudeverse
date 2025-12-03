@@ -1,0 +1,16 @@
+{
+  "name": "programming-tutor",
+  "version": "0.1.0",
+  "description": "Interactive programming tutor that bridges the gap from basic syntax knowledge to building real, useful programs. Features adaptive teaching, progress tracking, and spaced repetition.",
+  "author": {
+    "name": "Claude Code Plugin Developer"
+  },
+  "keywords": [
+    "education",
+    "learning",
+    "tutorial",
+    "programming",
+    "teaching",
+    "curriculum"
+  ]
+}

@@ -94,10 +94,10 @@ TDD_SECTION=$(cat << EOF
 
 | Command | Purpose |
 |---------|---------|
-| \`/tdd <feature>\` | Full TDD workflow for new features |
-| \`/tdd-plugin:fix <issue>\` | Quick fix with test-first approach |
+| \`tdd-plugin:tdd [feature]\` | Full TDD workflow for new features |
+| \`/tdd-plugin:fix [issue]\` | Quick fix with test-first approach |
 | \`/tdd-plugin:check\` | Compliance and coverage report |
-| \`/tdd-plugin:adr <title>\` | Create architecture decision record |
+| \`/tdd-plugin:adr [title]` | Create architecture decision record |
 | \`/tdd-plugin:init\` | Initialize TDD in new project |
 
 ### Key Locations

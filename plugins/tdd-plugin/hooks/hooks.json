@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Load TDD context silently:\n\n1. Check .claude/current-feature.txt - if exists, note active feature\n2. Check .claude/tdd-plugin.local.md for settings\n3. Only display message if there's an active feature:\n   \"Working on: <feature> | /tdd to continue\"\n\nKeep output minimal or silent if no active feature.",
+            "prompt": "Load TDD context silently:\n\n1. Check .claude/current-feature.txt - if exists, note active feature\n2. Check .claude/tdd-plugin.local.md for settings\n3. Only display message if there's an active feature:\n   \"Working on: <feature> | /tdd-plugun:tdd to continue\"\n\nKeep output minimal or silent if no active feature.",
             "timeout": 10
           }
         ]
