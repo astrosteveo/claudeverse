@@ -153,16 +153,33 @@ TDD_SECTION+="
 
 # Update or append TDD section in CLAUDE.md
 if grep -q "## TDD Workflow Status" "$CLAUDE_MD"; then
-    # Replace existing TDD section using a temp file approach (more reliable than perl)
+    # Replace existing TDD section
     TEMP_FILE=$(mktemp)
 
-    # Extract content before TDD section
-    sed -n '1,/^---$/p' "$CLAUDE_MD" | head -n -1 > "$TEMP_FILE"
+    # Find line number where TDD section starts (the --- before it)
+    # Look for the --- that precedes "## TDD Workflow Status"
+    TDD_START_LINE=$(grep -n "## TDD Workflow Status" "$CLAUDE_MD" | head -1 | cut -d: -f1)
 
-    # Check if there's content before the TDD section
-    if [[ $(wc -l < "$TEMP_FILE") -eq 0 ]]; then
-        # TDD section is at the start, keep any header content
-        head -n 5 "$CLAUDE_MD" > "$TEMP_FILE"
+    if [[ -n "$TDD_START_LINE" && "$TDD_START_LINE" -gt 1 ]]; then
+        # Check if previous line is ---
+        PREV_LINE=$((TDD_START_LINE - 1))
+        PREV_CONTENT=$(sed -n "${PREV_LINE}p" "$CLAUDE_MD")
+
+        if [[ "$PREV_CONTENT" == "---" ]]; then
+            # Include content before the ---
+            END_LINE=$((PREV_LINE - 1))
+        else
+            # Include content before TDD heading
+            END_LINE=$((TDD_START_LINE - 1))
+        fi
+
+        # Extract content before TDD section (remove trailing blank lines)
+        head -n "$END_LINE" "$CLAUDE_MD" | sed -e :a -e '/^\s*$/d;N;ba' > "$TEMP_FILE"
+    else
+        # TDD section at very start, create minimal header
+        echo "# Project Context for Claude" > "$TEMP_FILE"
+        echo "" >> "$TEMP_FILE"
+        echo "This file is automatically maintained by the TDD plugin to keep Claude informed about the project state." >> "$TEMP_FILE"
     fi
 
     # Append new TDD section

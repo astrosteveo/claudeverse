@@ -2,50 +2,47 @@
 
 This file is automatically maintained by the TDD plugin to keep Claude informed about the project state.
 
-
 ---
 
 ## TDD Workflow Status
 
-**Last Updated**: 2025-12-02 20:41:16
+**Last Updated**: 2025-12-03 03:30:00
 
-### Project Configuration
-- **Project**: unknown
-- **Enforcement Mode**: advisory
-- **TDD Violations**: 0 unresolved (0 total)
+### Project Overview
+| Metric | Value |
+|--------|-------|
+| Project | claudeverse |
+| Enforcement | advisory |
+| Features | 0 documented |
+| ADRs | 0 recorded |
+| Violations | 0 unresolved |
+| Active Feature | None |
 
-### Key Documentation Locations
+### Quick Commands
 
-**Specifications & Requirements**
-- Feature specs: `docs/specs/<feature-name>/`
-- PRD template: `docs/specs/prd-template.md`
-- Technical specs: `docs/specs/technical-spec-template.md`
-- Manifest: `.claude/specs-manifest.yaml`
+| Command | Purpose |
+|---------|---------|
+| `/tdd <feature>` | Full TDD workflow for new features |
+| `/tdd:fix <issue>` | Quick fix with test-first approach |
+| `/tdd:check` | Compliance and coverage report |
+| `/tdd:adr <title>` | Create architecture decision record |
+| `/tdd:init` | Initialize TDD in new project |
 
-**Testing & Validation**
-- Test framework: Auto-detected (check `.claude/tdd-plugin.local.md`)
-- Coverage targets: See `.claude/tdd-plugin.local.md`
-- Violations log: `.claude/tdd-violations.json`
+### Key Locations
 
-**Session Data**
-- Current feature: `.claude/current-feature.txt` (if exists)
-- Session log: `.claude/tdd-session-log.md`
-- Plugin settings: `.claude/tdd-plugin.local.md`
+| Type | Path |
+|------|------|
+| Feature specs | `docs/specs/<feature>/` |
+| ADRs | `docs/adrs/` |
+| Settings | `.claude/tdd-plugin.local.md` |
+| Manifest | `.claude/specs-manifest.yaml` |
 
-### Recent Activity### Quick Commands
+### TDD Principles
 
-- `/tdd-plugin:status` - Check current TDD workflow status
-- `/tdd-plugin:run-cycle` - Run guided TDD cycle
-- `/tdd-plugin:start-feature <name>` - Begin new feature with spec
-- `/tdd-plugin:checkpoint` - Validate current state
-
-### How to Use This Context
-
-When starting a new session:
-1. Check `.claude/current-feature.txt` for active feature
-2. Review recent violations in `.claude/tdd-violations.json`
-3. Read feature spec from `docs/specs/<feature>/`
-4. Follow TDD workflow: Spec → Test → Implement
+1. **Specs First** - Document requirements before coding
+2. **Tests First** - Write failing tests before implementation
+3. **Minimal Code** - Only implement what tests require
+4. **Refactor** - Improve code while keeping tests green
+5. **Document Decisions** - Use ADRs for significant choices
 
 ---
-
