@@ -5,8 +5,13 @@
         "matcher": "Write|Edit",
         "hooks": [
           {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/check-integration.sh\"",
+            "timeout": 30
+          },
+          {
             "type": "prompt",
-            "prompt": "Before writing or editing code, check if tests exist:\n\n1. Identify the file being modified: {{tool_input.file_path}}\n2. Determine corresponding test file path based on conventions:\n   - JavaScript/TypeScript: *.test.js, *.spec.ts\n   - Python: *_test.py, test_*.py\n   - Go: *_test.go\n   - Ruby: *_spec.rb\n3. Check if test file exists using Glob tool\n4. Read settings from .claude/tdd-plugin.local.md to get enforcementLevel\n5. If test doesn't exist:\n   - advisory mode: Show warning, log violation to .claude/tdd-violations.json, allow\n   - strict mode: Block with error message including fix command (/tdd:create-test)\n   - graduated mode: Check violation count, block if over threshold\n6. Check exemptions list in settings before enforcing\n7. If file is in exemptions (scripts/, docs/, *.config.js): Skip validation, allow\n\nOnly apply validation if writing implementation code (not tests, docs, or configs).",
+            "prompt": "Before writing or editing code, check if tests AND integration exist:\n\n1. Identify the file being modified: {{tool_input.file_path}}\n2. Determine corresponding test file path based on conventions:\n   - JavaScript/TypeScript: *.test.js, *.spec.ts\n   - Python: *_test.py, test_*.py\n   - Go: *_test.go\n   - Ruby: *_spec.rb\n3. Check if test file exists using Glob tool\n4. **NEW: Check if code is actually integrated:**\n   - If creating new function/class/component, search codebase for imports/calls\n   - If no references found outside test files: WARN about missing integration\n   - Look for integration test files (test/**/integration/*, **/*integration.test.*)\n   - If no integration tests AND no usage found: Flag as \"tested but not integrated\"\n5. Read settings from .claude/tdd-plugin.local.md to get enforcementLevel\n6. If test doesn't exist OR code not integrated:\n   - advisory mode: Show warning, log violation to .claude/tdd-violations.json, allow\n   - strict mode: Block with error message including fix command (/tdd:create-test)\n   - graduated mode: Check violation count, block if over threshold\n7. Check exemptions list in settings before enforcing\n8. If file is in exemptions (scripts/, docs/, *.config.js): Skip validation, allow\n\nCRITICAL: Must verify code is USED somewhere, not just tested in isolation.",
             "timeout": 30
           }
         ]
