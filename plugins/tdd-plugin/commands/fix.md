@@ -117,14 +117,14 @@ describe('Context', () => {
 
    Tests: X passing
 
-   Next: Commit changes or run /tdd:check
+   Next: Commit changes or run /tdd-plugin:check
    ```
 
 ## Examples
 
 ### Bug Fix
 ```
-/tdd:fix users can't login with special characters in password
+/tdd-plugin:fix users can't login with special characters in password
 
 → Understand: Password validation regex rejects valid special chars
 → Test: it('accepts passwords with !@#$% characters')
@@ -134,7 +134,7 @@ describe('Context', () => {
 
 ### Small Enhancement
 ```
-/tdd:fix add email validation to registration form
+/tdd-plugin:fix add email validation to registration form
 
 → Understand: Registration accepts invalid emails
 → Test: it('rejects emails without @ symbol')
@@ -144,7 +144,7 @@ describe('Context', () => {
 
 ### Code Review Finding
 ```
-/tdd:fix handle null user in getProfile
+/tdd-plugin:fix handle null user in getProfile
 
 → Understand: getProfile throws on null user instead of returning error
 → Test: it('returns NotFound error when user is null')
@@ -154,7 +154,7 @@ describe('Context', () => {
 
 ## Key Differences from /tdd
 
-| Aspect | /tdd | /tdd:fix |
+| Aspect | /tdd | /tdd-plugin:fix |
 |--------|------|----------|
 | Specs | Creates PRD, tech spec, requirements | None |
 | Phases | 6 (Discovery → Summary) | 4 (Understand → Verify) |
@@ -167,5 +167,5 @@ describe('Context', () => {
 - No specs created or updated
 - No manifest tracking (too granular)
 - Does update CLAUDE.md if significant
-- Can chain multiple fixes: `/tdd:fix` for each issue
+- Can chain multiple fixes: `/tdd-plugin:fix` for each issue
 - For larger changes, use `/tdd <feature>` instead

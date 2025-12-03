@@ -1,5 +1,5 @@
 ---
-description: This agent analyzes test coverage and identifies gaps requiring additional tests. Use when user asks to "analyze coverage", "find coverage gaps", "identify untested code", "improve test coverage", "what code is not tested", or when /tdd:check shows low coverage.
+description: This agent analyzes test coverage and identifies gaps requiring additional tests. Use when user asks to "analyze coverage", "find coverage gaps", "identify untested code", "improve test coverage", "what code is not tested", or when /tdd-plugin:check shows low coverage.
 color: yellow
 model: sonnet
 tools:

@@ -183,10 +183,10 @@ Initial request: $ARGUMENTS
    Test files: [list]
    Implementation files: [list]
 
-   Coverage: Run /tdd:check for detailed report
+   Coverage: Run /tdd-plugin:check for detailed report
 
    Next steps:
-   - Run /tdd:check for compliance report
+   - Run /tdd-plugin:check for compliance report
    - Consider additional edge case tests
    - Commit changes
    ```

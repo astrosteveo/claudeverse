@@ -15,7 +15,7 @@ The TDD Plugin provides a structured approach to test-driven development:
 
 ### 1. Initialize Project
 ```
-/tdd:init
+/tdd-plugin:init
 ```
 Creates directory structure and settings.
 
@@ -33,19 +33,19 @@ Guides you through:
 
 ### 3. Fix Bugs or Make Small Changes
 ```
-/tdd:fix password validation rejects valid special characters
+/tdd-plugin:fix password validation rejects valid special characters
 ```
 Lightweight test-first workflow for bug fixes and small improvements.
 
 ### 4. Document Architectural Decisions
 ```
-/tdd:adr Use Redis for session storage
+/tdd-plugin:adr Use Redis for session storage
 ```
 Creates a structured ADR in `docs/adrs/`.
 
 ### 5. Check Compliance
 ```
-/tdd:check
+/tdd-plugin:check
 ```
 Generates report on specs, tests, and coverage.
 
@@ -53,11 +53,11 @@ Generates report on specs, tests, and coverage.
 
 | Command | Description |
 |---------|-------------|
-| `/tdd <feature>` | Full TDD workflow for new features |
-| `/tdd:fix <issue>` | Lightweight TDD for bug fixes and small changes |
-| `/tdd:adr <title>` | Create Architecture Decision Record |
-| `/tdd:init` | Initialize project structure |
-| `/tdd:check` | Compliance and coverage report |
+| `/tdd-plugin:tdd <feature>` | Full TDD workflow for new features |
+| `/tdd-plugin:fix <issue>` | Lightweight TDD for bug fixes and small changes |
+| `/tdd-plugin:adr <title>` | Create Architecture Decision Record |
+| `/tdd-plugin:init` | Initialize project structure |
+| `/tdd-plugin:check` | Compliance and coverage report |
 
 ## How It Works
 
@@ -94,7 +94,7 @@ Runs a phased workflow similar to feature-dev, but with TDD methodology:
 - Update manifest
 - Report completion
 
-### The /tdd:fix Command
+### The /tdd-plugin:fix Command
 
 Lightweight workflow for bug fixes, small enhancements, and iterative development. Skips specifications and goes straight to test → implement → verify.
 
@@ -111,7 +111,7 @@ Lightweight workflow for bug fixes, small enhancements, and iterative developmen
 4. **Verify** - Run full test suite
 
 ```
-/tdd:fix users can't login with special characters in password
+/tdd-plugin:fix users can't login with special characters in password
 
 → Understand: Password validation regex rejects valid special chars
 → Test: it('accepts passwords with !@#$% characters')
@@ -119,7 +119,7 @@ Lightweight workflow for bug fixes, small enhancements, and iterative developmen
 → Verify: All tests pass
 ```
 
-### The /tdd:adr Command
+### The /tdd-plugin:adr Command
 
 Creates Architecture Decision Records to document significant technical decisions.
 
@@ -133,7 +133,7 @@ Creates Architecture Decision Records to document significant technical decision
 **Output**: `docs/adrs/NNNN-<slug>.md`
 
 ```
-/tdd:adr Use PostgreSQL for primary database
+/tdd-plugin:adr Use PostgreSQL for primary database
 
 → Gathered context and options
 → Created: docs/adrs/0001-use-postgresql-for-primary-database.md
@@ -302,14 +302,14 @@ Coverage: 87% line, 82% branch
 If upgrading from the previous version:
 
 1. Old commands map to new:
-   - `/tdd:start-feature` → `/tdd <name>`
-   - `/tdd:run-cycle` → `/tdd` (continues current feature)
-   - `/tdd:checkpoint` → `/tdd:check`
-   - `/tdd:init-project` → `/tdd:init`
+   - `/tdd-plugin:start-feature` → `/tdd <name>`
+   - `/tdd-plugin:run-cycle` → `/tdd` (continues current feature)
+   - `/tdd-plugin:checkpoint` → `/tdd-plugin:check`
+   - `/tdd-plugin:init-project` → `/tdd-plugin:init`
 
 2. New commands added:
-   - `/tdd:fix` - Lightweight workflow for bug fixes
-   - `/tdd:adr` - Architecture Decision Records
+   - `/tdd-plugin:fix` - Lightweight workflow for bug fixes
+   - `/tdd-plugin:adr` - Architecture Decision Records
 
 3. Skills consolidated into `tdd-practices`
 

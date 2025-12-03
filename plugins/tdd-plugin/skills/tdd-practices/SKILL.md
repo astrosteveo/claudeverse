@@ -371,6 +371,6 @@ test_email_validator_with_empty_string_returns_false
 
 | Command | Purpose |
 |---------|---------|
-| `/tdd <feature>` | Full TDD workflow |
-| `/tdd:init` | Initialize project |
-| `/tdd:check` | Compliance report |
+| `/tdd-plugin:tdd <feature>` | Full TDD workflow |
+| `/tdd-plugin:init` | Initialize project |
+| `/tdd-plugin:check` | Compliance report |

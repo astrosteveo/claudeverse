@@ -131,10 +131,10 @@ Create directory structure, copy templates, initialize settings, and create CLAU
 
    | Command | Purpose |
    |---------|---------|
-   | `/tdd <feature>` | Full TDD workflow for new features |
-   | `/tdd:fix <issue>` | Quick fix with test-first approach |
-   | `/tdd:check` | Compliance and coverage report |
-   | `/tdd:adr <title>` | Create architecture decision record |
+   | `/tdd-plugin:tdd <feature>` | Full TDD workflow for new features |
+   | `/tdd-plugin:fix <issue>` | Quick fix with test-first approach |
+   | `/tdd-plugin:check` | Compliance and coverage report |
+   | `/tdd-plugin:adr <title>` | Create architecture decision record |
 
    ### TDD Workflow
 
@@ -151,7 +151,7 @@ Create directory structure, copy templates, initialize settings, and create CLAU
 
    ---
 
-   *This file is maintained by the TDD plugin. Run `/tdd:check` to update status.*
+   *This file is maintained by the TDD plugin. Run `/tdd-plugin:check` to update status.*
    ```
 
    **Language-specific Architecture sections** (include appropriate one):
@@ -302,10 +302,10 @@ Create directory structure, copy templates, initialize settings, and create CLAU
 
    | Command | Purpose |
    |---------|---------|
-   | `/tdd <feature>` | Full TDD workflow for new features |
-   | `/tdd:fix <issue>` | Quick fix with test-first approach |
-   | `/tdd:check` | Compliance and coverage report |
-   | `/tdd:adr <title>` | Create architecture decision record |
+   | `/tdd-plugin:tdd <feature>` | Full TDD workflow for new features |
+   | `/tdd-plugin:fix <issue>` | Quick fix with test-first approach |
+   | `/tdd-plugin:check` | Compliance and coverage report |
+   | `/tdd-plugin:adr <title>` | Create architecture decision record |
 
    ### Key Locations
 
@@ -339,7 +339,7 @@ Create directory structure, copy templates, initialize settings, and create CLAU
    1. Review CLAUDE.md and add project description
    2. Review settings in .claude/tdd-plugin.local.md
    3. Start a feature: /tdd <feature-name>
-   4. Or fix something: /tdd:fix <description>
+   4. Or fix something: /tdd-plugin:fix <description>
    ```
 
 ## Notes

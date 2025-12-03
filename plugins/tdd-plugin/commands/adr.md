@@ -136,7 +136,7 @@ date: YYYY-MM-DD
        date: "YYYY-MM-DD"
        file: "docs/adrs/NNNN-<slug>.md"
    ```
-3. If manifest doesn't exist, inform user to run `/tdd:init` first
+3. If manifest doesn't exist, inform user to run `/tdd-plugin:init` first
 
 ### Phase 5: Summary
 
@@ -164,7 +164,7 @@ To list all ADRs: ls docs/adrs/
 
 ### Technology Choice
 ```
-/tdd:adr Use PostgreSQL for primary database
+/tdd-plugin:adr Use PostgreSQL for primary database
 
 → Context: Need production database for new service
 → Options: PostgreSQL, MySQL, MongoDB, SQLite
@@ -174,7 +174,7 @@ To list all ADRs: ls docs/adrs/
 
 ### Architectural Pattern
 ```
-/tdd:adr Implement event sourcing for order system
+/tdd-plugin:adr Implement event sourcing for order system
 
 → Context: Need audit trail and ability to replay events
 → Options: Traditional CRUD, Event sourcing, Hybrid
@@ -184,7 +184,7 @@ To list all ADRs: ls docs/adrs/
 
 ### Breaking Change
 ```
-/tdd:adr Migrate API from v1 to v2 with breaking changes
+/tdd-plugin:adr Migrate API from v1 to v2 with breaking changes
 
 → Context: v1 API has accumulated tech debt
 → Options: Versioned endpoints, gradual migration, big bang
