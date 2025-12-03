@@ -1,220 +1,118 @@
 # TDD Plugin for Claude Code
 
-Enforce Spec and Test Driven Development workflows with automated validation, comprehensive documentation templates, and intelligent test-first guidance.
+A streamlined Test-Driven Development workflow plugin with specification support, test enforcement, and coverage analysis.
 
 ## Overview
 
-The TDD Plugin helps teams follow rigorous specification and test-driven practices by providing:
+The TDD Plugin provides a structured approach to test-driven development:
 
-- **Structured Documentation**: PRD, technical specifications, and functional requirements templates
-- **Test-First Enforcement**: Configurable validation that ensures tests exist before implementation
-- **Multi-Language Support**: Jest, Pytest, Go test, and RSpec detection and conventions
-- **Coverage Analysis**: Automated threshold validation and gap identification
-- **Workflow Guidance**: Step-by-step TDD cycle assistance with red-green-refactor tracking
-- **Architecture Decision Records**: ADR templates and best practices
-
-## Features
-
-### 📋 Documentation Templates
-- Product Requirements Documents (PRDs)
-- Technical Specifications with Mermaid diagram placeholders
-- Functional Requirements with user story format
-- Architecture Decision Records (ADRs)
-- Test Case templates with Given-When-Then structure
-
-### 🔴🟢🔄 TDD Workflow Support
-- Guided red-green-refactor cycles
-- Test-first validation hooks
-- Automated test execution after code changes
-- Coverage threshold enforcement
-
-### 🧪 Multi-Language Testing
-- **JavaScript/TypeScript**: Jest, Vitest conventions
-- **Python**: Pytest, unittest patterns
-- **Go**: Go test standards
-- **Ruby**: RSpec conventions
-
-### 📊 Tracking & Reporting
-- Specs manifest tracking (spec → test → code mappings)
-- Session logs with TDD compliance metrics
-- Coverage reports with gap analysis
-- Git-based test-first verification
-
-## Installation
-
-### From Local Marketplace
-```bash
-cc --plugin-dir /home/astrosteveo/workspace/claudeverse/plugins/tdd-plugin
-```
-
-Or add to your project's `.claude/plugins.json`:
-```json
-{
-  "plugins": [
-    "tdd-plugin@local:/home/astrosteveo/workspace/claudeverse/plugins/tdd-plugin"
-  ]
-}
-```
+- **Single workflow command** (`/tdd`) that guides you through spec → test → implement
+- **Test enforcement hooks** that remind you to write tests first
+- **Coverage analysis** to identify gaps and improve test quality
+- **Multi-language support** for Jest, Pytest, Go test, and RSpec
 
 ## Quick Start
 
 ### 1. Initialize Project
 ```
-/tdd:init-project
+/tdd:init
 ```
+Creates directory structure and settings.
 
-Creates directory structure, installs templates, and initializes settings.
-
-### 2. Configure Settings
-
-Edit `.claude/tdd-plugin.local.md`:
-
-```yaml
----
-enforcementLevel: advisory  # advisory | strict | graduated
-graduatedThreshold: 3       # violations before strict mode
-coverage:
-  lineThreshold: 80
-  branchThreshold: 75
-  enabled: true
-testFramework: auto         # auto | jest | pytest | gotest | rspec
-autoRunTests: false         # Auto-run tests after code changes
-blockWithoutSpecs: false    # Require spec before tests
-trackingEnabled: true       # Log violations and metrics
-gracePeriodDays: 7          # Days before enforcement starts
-exemptions:
-  - "scripts/**"
-  - "docs/**"
-  - "*.config.js"
----
+### 2. Start Feature Development
 ```
-
-### 3. Start a Feature
+/tdd user-authentication
 ```
-/tdd:start-feature user-authentication
-```
+Guides you through:
+1. **Discovery** - Understand what to build
+2. **Specification** - Create PRD and requirements
+3. **Test Design** - Write failing tests (RED)
+4. **Implementation** - Write code to pass tests (GREEN)
+5. **Refactor** - Improve code quality (REFACTOR)
+6. **Summary** - Document completion
 
-Scaffolds:
-- `docs/specs/user-authentication/prd.md`
-- `docs/specs/user-authentication/technical-spec.md`
-- `docs/specs/user-authentication/requirements.md`
-- Entry in `.claude/specs-manifest.yaml`
-
-### 4. Follow TDD Cycle
+### 3. Check Compliance
 ```
-/tdd:run-cycle
+/tdd:check
 ```
-
-Guides through:
-1. Write failing test (RED)
-2. Implement minimal code (GREEN)
-3. Refactor for quality (REFACTOR)
-
-### 5. Validate Progress
-```
-/tdd:checkpoint
-```
-
-Reports:
-- Specification completeness
-- Test coverage status
-- TDD compliance score
-- Violations log
+Generates report on specs, tests, and coverage.
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/tdd:init-project` | One-time project setup with templates and directories |
-| `/tdd:start-feature <name>` | Scaffold new feature with PRD, spec, and test placeholders |
-| `/tdd:create-prd` | Interactive PRD creation with guided prompts |
-| `/tdd:create-spec` | Generate technical specification from PRD |
-| `/tdd:create-test` | Create test files with framework-specific boilerplate |
-| `/tdd:run-cycle` | Guided red-green-refactor workflow |
-| `/tdd:checkpoint` | Validate current state and generate compliance report |
+| `/tdd <feature>` | Full TDD workflow for feature |
+| `/tdd:init` | Initialize project structure |
+| `/tdd:check` | Compliance and coverage report |
 
-## Skills
+## How It Works
 
-Skills activate automatically based on your questions:
+### The /tdd Command
 
-- **TDD Workflow**: "how do I do TDD", "red green refactor"
-- **Spec Writing**: "create PRD", "write technical spec"
-- **Test Patterns**: "test structure", "given when then"
-- **Coverage Analysis**: "analyze coverage", "coverage gaps"
-- **ADR Practices**: "architecture decision", "document decision"
+Runs a phased workflow similar to feature-dev, but with TDD methodology:
 
-## Agents
+**Phase 1: Discovery**
+- Understand the feature request
+- Load existing specs if available
+- Clarify requirements
 
-Agents are invoked by commands for specialized tasks:
+**Phase 2: Specification**
+- Create PRD, technical spec, functional requirements
+- Or review existing specifications
+- Identify testable requirements (FR-XXX)
 
-- **Spec Writer**: Converts PRDs to detailed technical specifications
-- **Test Generator**: Creates comprehensive test suites from specs
-- **Coverage Analyzer**: Identifies untested code paths
-- **Workflow Orchestrator**: Guides through complete TDD cycles
+**Phase 3: Test Design (RED)**
+- Generate tests from requirements
+- Use test-generator agent
+- Verify tests fail
 
-## Hooks
+**Phase 4: Implementation (GREEN)**
+- Write minimal code to pass tests
+- Optionally use feature-dev agents for exploration
+- Run tests after each change
 
-Automated validation hooks (configurable via settings):
+**Phase 5: Refactor & Validate**
+- Improve code quality
+- Check coverage
+- Address gaps
 
-- **PreToolUse**: Validates test existence before code edits
-- **Stop**: Generates session summary with TDD metrics
-- **SessionStart**: Loads current feature spec into context
-- **UserPromptSubmit**: Suggests writing tests when implementation detected
-- **PostToolUse**: Auto-runs tests after code changes (opt-in)
+**Phase 6: Summary**
+- Update manifest
+- Report completion
+
+### Integration with feature-dev
+
+If the feature-dev plugin is installed, `/tdd` can leverage its agents:
+- `code-explorer` for codebase understanding
+- `code-architect` for design
+- `code-reviewer` for quality review
+
+Without feature-dev, the plugin works standalone.
 
 ## Configuration
 
-### Enforcement Levels
+Settings in `.claude/tdd-plugin.local.md`:
 
-**Advisory** (default): Warns but allows violations
 ```yaml
-enforcementLevel: advisory
-```
-
-**Strict**: Blocks code changes without tests
-```yaml
-enforcementLevel: strict
-```
-
-**Graduated**: Advisory for N violations, then strict
-```yaml
-enforcementLevel: graduated
-graduatedThreshold: 3
-```
-
-### Coverage Thresholds
-
-Per-language thresholds:
-```yaml
+---
+enforcementLevel: advisory  # advisory | strict
 coverage:
   lineThreshold: 80
   branchThreshold: 75
-  perLanguage:
-    javascript: { line: 85, branch: 80 }
-    python: { line: 90, branch: 85 }
-    go: { line: 80, branch: 75 }
-```
-
-### Per-Directory Overrides
-
-```yaml
-directoryOverrides:
-  "src/core/**":
-    enforcementLevel: strict
-    coverage: { line: 90, branch: 85 }
-  "src/legacy/**":
-    enforcementLevel: advisory
-```
-
-### Exemptions
-
-```yaml
+  enabled: true
+testFramework: auto
+autoRunTests: false
 exemptions:
   - "scripts/**"
-  - "*.config.js"
-  - "migrations/**"
   - "docs/**"
+  - "*.config.js"
+---
 ```
+
+### Enforcement Levels
+
+- **advisory** (default): Shows warnings, allows code changes
+- **strict**: Blocks code changes without tests
 
 ## Project Structure
 
@@ -223,103 +121,129 @@ After initialization:
 ```
 project-root/
 ├── docs/
-│   ├── specs/
-│   │   └── <feature-name>/
-│   │       ├── prd.md
-│   │       ├── technical-spec.md
-│   │       └── requirements.md
-│   └── adrs/
-│       └── NNNN-decision-title.md
+│   └── specs/
+│       └── <feature-name>/
+│           ├── prd.md
+│           ├── technical-spec.md
+│           └── requirements.md
 ├── .claude/
-│   ├── tdd-plugin.local.md          # Settings
-│   ├── specs-manifest.yaml          # Spec → Test → Code tracking
-│   ├── tdd-session-log.md           # Session summaries
-│   ├── tdd-violations.json          # Violation tracking
-│   └── current-feature.txt          # Active feature name
+│   ├── specs-manifest.yaml
+│   ├── tdd-plugin.local.md
+│   └── current-feature.txt
 └── tests/
     └── (your test files)
 ```
 
-## Git Integration
+## Agents
 
-Optional Git hooks (installed via `/tdd:init-project`):
+### test-generator
 
-**pre-commit**: Validates test-first ordering and coverage thresholds
+Generates comprehensive test suites from functional requirements.
 
-**pre-push**: Ensures specs are committed for in-progress features
+**Triggers**: "generate tests", "create test suite", "write tests for feature"
 
-Enable during initialization or add manually:
-```bash
-cp .claude/git-hooks/pre-commit .git/hooks/
-chmod +x .git/hooks/pre-commit
+**Output**: Test files with:
+- Framework-specific structure
+- Tests for each FR-XXX requirement
+- Happy path and error cases
+
+### coverage-analyzer
+
+Analyzes coverage reports and suggests improvements.
+
+**Triggers**: "analyze coverage", "find coverage gaps", "improve test coverage"
+
+**Output**: Report with:
+- Files below threshold
+- Prioritized gaps
+- Specific test suggestions
+
+## Skill
+
+The `tdd-practices` skill activates when you ask about:
+- TDD workflow, red-green-refactor
+- Test patterns (AAA, Given-When-Then)
+- Coverage analysis
+- Specification writing
+
+## Hooks
+
+**PreToolUse** (Write/Edit): Checks for tests before code changes
+- advisory: Shows warning
+- strict: Blocks without tests
+
+**SessionStart**: Loads active feature context
+
+**SessionEnd**: Updates CLAUDE.md with status
+
+## Templates
+
+Templates in `templates/`:
+- `prd-template.md` - Product Requirements Document
+- `technical-spec-template.md` - Technical Specification
+- `functional-requirements-template.md` - Functional Requirements
+- `test-case-template.md` - Test Case Template
+
+## Language Support
+
+| Language | Framework | Detection |
+|----------|-----------|-----------|
+| JavaScript/TypeScript | Jest, Vitest | package.json |
+| Python | Pytest | pytest.ini, pyproject.toml |
+| Go | go test | go.mod |
+| Ruby | RSpec | Gemfile + spec/ |
+
+## Example Workflow
+
+```
+User: /tdd payment-processing
+
+Claude: Starting TDD workflow for payment-processing...
+
+Phase 1: Discovery
+- What payment methods need support?
+- Any specific validation requirements?
+
+Phase 2: Specification
+Created:
+- docs/specs/payment-processing/prd.md
+- docs/specs/payment-processing/technical-spec.md
+- docs/specs/payment-processing/requirements.md
+
+Phase 3: Test Design
+Writing tests for:
+- FR-001: Validate payment amount
+- FR-002: Process credit card
+- FR-003: Handle declined transactions
+
+🔴 Tests failing as expected
+
+Phase 4: Implementation
+Implementing FR-001...
+🟢 Tests passing
+
+[continues through all requirements]
+
+Phase 6: Summary
+✅ Feature Complete: payment-processing
+Requirements: 3/3 implemented
+Coverage: 87% line, 82% branch
 ```
 
-## Examples
+## Migration from v0.1
 
-### Example: Starting a New Feature
+If upgrading from the previous version:
 
-```
-User: /tdd:start-feature payment-processing
+1. Old commands map to new:
+   - `/tdd:start-feature` → `/tdd <name>`
+   - `/tdd:run-cycle` → `/tdd` (continues current feature)
+   - `/tdd:checkpoint` → `/tdd:check`
+   - `/tdd:init-project` → `/tdd:init`
 
-Claude: Created feature scaffold:
-✓ docs/specs/payment-processing/prd.md (template)
-✓ docs/specs/payment-processing/technical-spec.md (template)
-✓ docs/specs/payment-processing/requirements.md (template)
-✓ Updated .claude/specs-manifest.yaml
-✓ Set as current feature
+2. Skills consolidated into `tdd-practices`
 
-Next steps:
-1. Fill out PRD: /tdd:create-prd
-2. Generate spec: /tdd:create-spec
-3. Create tests: /tdd:create-test
-```
-
-### Example: TDD Cycle
-
-```
-User: /tdd:run-cycle
-
-Claude: Starting TDD cycle for payment-processing...
-
-Step 1: RED - Write failing test
-- Create test file: tests/payment/process.test.js
-- Define expected behavior
-- Run tests (should fail)
-
-Ready to proceed? [yes]
-```
-
-## Troubleshooting
-
-### Tests Not Detected
-- Check test file naming matches conventions (`*.test.js`, `*_test.py`, etc.)
-- Verify `testFramework` setting in `.claude/tdd-plugin.local.md`
-- Run `/tdd:checkpoint` to see detected tests
-
-### Coverage Not Calculated
-- Ensure coverage tool is installed (nyc, coverage.py, go test -cover)
-- Check coverage output format (LCOV or Cobertura XML)
-- Verify `coverage.enabled: true` in settings
-
-### Hooks Not Triggering
-- Confirm plugin is enabled in Claude Code
-- Check hook configuration in `hooks/hooks.json`
-- Verify enforcement level is not `disabled`
-
-## Contributing
-
-Contributions welcome! Please ensure:
-- Tests exist for new features
-- Documentation is updated
-- Examples are provided
-- Code follows existing patterns
+3. Hooks simplified (removed UserPromptSubmit, PostToolUse)
 
 ## License
 
-MIT License - see LICENSE file for details
-
-## Support
-
-- Issues: https://github.com/claude-code/tdd-plugin/issues
-- Docs: https://github.com/claude-code/tdd-plugin/wiki
-- Community: https://discord.gg/claude-code
+MIT License - see LICENSE file for details.

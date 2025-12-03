@@ -1,7 +1,7 @@
 {
   "name": "tdd-plugin",
-  "version": "0.1.0",
-  "description": "Enforces Spec and Test Driven Development workflows with PRD creation, technical specifications, functional requirements documentation, test-first development, and automated validation hooks",
+  "version": "0.2.0",
+  "description": "Streamlined Test-Driven Development workflow with single phased command, test enforcement hooks, and coverage analysis",
   "author": {
     "name": "Claude Code Community",
     "email": "community@claude.ai"
@@ -9,12 +9,10 @@
   "keywords": [
     "tdd",
     "test-driven-development",
-    "specification",
     "testing",
     "workflow",
-    "quality",
-    "documentation",
-    "coverage"
+    "coverage",
+    "specification"
   ],
   "license": "MIT"
 }

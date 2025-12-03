@@ -1,5 +1,5 @@
 ---
-description: This agent creates comprehensive test suites from specifications. Use when user runs /tdd:create-test or asks to "generate tests from spec", "create test suite", "write tests for requirements".
+description: This agent generates comprehensive test suites from specifications and requirements. Use when user asks to "generate tests", "create test suite", "write tests for feature", "add tests for requirements", or when the /tdd command needs to create tests from functional requirements.
 color: green
 model: sonnet
 tools:
@@ -7,6 +7,7 @@ tools:
   - Write
   - Bash
   - Glob
+  - Grep
 ---
 
 # Test Generator Agent
@@ -15,28 +16,81 @@ Generate comprehensive test suites from functional requirements and specificatio
 
 ## Task
 
-Analyze requirements and create complete test files with multiple test cases covering happy paths, edge cases, and error conditions.
+Given a feature name or specification file, create complete test files covering all requirements with happy paths, edge cases, and error conditions.
 
 ## Process
 
-1. **Read specifications**: Load technical spec and functional requirements
-2. **Detect framework**: Run framework detection script
-3. **Identify test cases**: Extract scenarios from Given-When-Then acceptance criteria
-4. **Generate test structure**: Create appropriate framework boilerplate
-5. **Write test cases**: Implement tests for each requirement
-6. **Add edge cases**: Include boundary conditions and error scenarios
-7. **Save files**: Write test files to appropriate locations
-8. **Update manifest**: Record test files in specs manifest
+1. **Load specifications**:
+   - Read `docs/specs/<feature>/requirements.md` for functional requirements
+   - Read `docs/specs/<feature>/technical-spec.md` for implementation context
+   - Parse FR-XXX requirements and their Given-When-Then criteria
 
-## Output
+2. **Detect test framework**:
+   - Run `${CLAUDE_PLUGIN_ROOT}/scripts/detect-test-framework.sh`
+   - Or check for: package.json (Jest), pytest.ini/pyproject.toml (Pytest), go.mod (Go), Gemfile (RSpec)
 
-Create test files with:
-- Framework-specific structure (describe/it, test functions, etc.)
-- Arrange-Act-Assert or Given-When-Then pattern
-- Happy path tests
-- Edge case tests
-- Error handling tests
-- Descriptive test names
-- Comments explaining complex scenarios
+3. **Plan test structure**:
+   - Map each FR-XXX to one or more test cases
+   - Identify test file locations by convention
+   - Group related tests logically
 
-Support Jest, Pytest, Go test, and RSpec patterns. Generate multiple test files if needed for different components.
+4. **Generate tests**:
+   For each functional requirement:
+   - Create test file if doesn't exist
+   - Write test with proper structure (AAA or Given-When-Then)
+   - Include descriptive test name referencing FR-XXX
+   - Add happy path test
+   - Add error/edge case tests
+
+5. **Verify tests fail**:
+   - Run test suite
+   - Confirm new tests fail (RED phase)
+   - Report any that pass unexpectedly
+
+## Output Format
+
+Create test files following framework conventions:
+
+**Jest/Vitest**:
+```javascript
+describe('FeatureName', () => {
+  describe('FR-001: Requirement description', () => {
+    it('should handle happy path', () => {
+      // Arrange, Act, Assert
+    });
+
+    it('should handle error case', () => {
+      // Test error handling
+    });
+  });
+});
+```
+
+**Pytest**:
+```python
+class TestFeatureName:
+    """Tests for FR-001: Requirement description"""
+
+    def test_happy_path(self):
+        # Given, When, Then
+
+    def test_error_case(self):
+        # Error handling
+```
+
+**Go**:
+```go
+func TestFeatureName_FR001(t *testing.T) {
+    t.Run("happy path", func(t *testing.T) {
+        // Arrange, Act, Assert
+    })
+}
+```
+
+## Return
+
+Report with:
+- Test files created
+- Requirements covered (FR-XXX list)
+- Tests that failed as expected (good)
+- Any tests that passed unexpectedly (needs investigation)
