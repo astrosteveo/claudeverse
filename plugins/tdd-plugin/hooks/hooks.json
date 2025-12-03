@@ -1,0 +1,66 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before writing or editing code, check if tests exist:\n\n1. Identify the file being modified: {{tool_input.file_path}}\n2. Determine corresponding test file path based on conventions:\n   - JavaScript/TypeScript: *.test.js, *.spec.ts\n   - Python: *_test.py, test_*.py\n   - Go: *_test.go\n   - Ruby: *_spec.rb\n3. Check if test file exists using Glob tool\n4. Read settings from .claude/tdd-plugin.local.md to get enforcementLevel\n5. If test doesn't exist:\n   - advisory mode: Show warning, log violation to .claude/tdd-violations.json, allow\n   - strict mode: Block with error message including fix command (/tdd:create-test)\n   - graduated mode: Check violation count, block if over threshold\n6. Check exemptions list in settings before enforcing\n7. If file is in exemptions (scripts/, docs/, *.config.js): Skip validation, allow\n\nOnly apply validation if writing implementation code (not tests, docs, or configs).",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Code was modified. Check if auto-run tests enabled:\n\n1. Read .claude/tdd-plugin.local.md settings\n2. Check autoRunTests setting (default: false)\n3. If false: Skip, do nothing\n4. If true:\n   - Determine test framework (run detect script if needed)\n   - Identify related test files for modified code\n   - Run only related tests (not full suite)\n   - Display results: pass/fail count\n   - If failures: Show which tests failed\n5. Never auto-run in strict enforcement failures\n6. Keep output concise\n\nThis is opt-in feature, default disabled.",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before responding to user request, check for implementation intent:\n\n1. Analyze user prompt for keywords: \"implement\", \"add feature\", \"write code\", \"create function\", \"build\"\n2. If implementation intent detected:\n   - Check if current feature has tests\n   - Check if tests exist for mentioned functionality\n   - If no tests: Inject gentle reminder: \"💡 TDD Reminder: Consider writing tests first with /tdd:create-test before implementation\"\n3. If user explicitly mentions tests: Skip reminder\n4. If enforcement is strict: Stronger reminder\n5. If user says \"skip tests\" or \"no tests\": Respect choice, log violation\n\nReminder should be subtle, one line, non-blocking. Don't lecture.",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/generate-report.sh\" -o \".claude/tdd-session-log.md\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/update-claude-md.sh\"",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Session starting. Load TDD context:\n\n1. Check if .claude/current-feature.txt exists\n2. If exists:\n   - Read feature name\n   - Check for git branch matching feature/* pattern\n   - Read feature spec from docs/specs/<feature>/\n   - Load PRD and technical spec summaries into context\n   - Display: \"Working on: <feature>\" with spec summary\n3. If not exists:\n   - Check git branch for feature/* pattern\n   - If found, extract feature name and set as current\n   - If not found, suggest /tdd:start-feature to begin\n4. Read settings to show current enforcement level\n5. Display quick start: /tdd:run-cycle for guided workflow\n\nBrief, informative message only. Don't overwhelm with details.",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+# Example .gitignore for .claude/memory/feature-specs/
+# Copy this to .claude/memory/feature-specs/.gitignore if you want to customize
+# what gets committed to version control
+
+# Option 1: Ignore all memory files (keep specs local only)
+# *
+# !.gitignore
+
+# Option 2: Keep only architecture specs, ignore explorations
+# explorations/
+
+# Option 3: Keep everything (default - just don't create .gitignore)
+# (no patterns needed)
+
+# Option 4: Keep only the latest architecture
+# *
+# !.gitignore
+# !latest-architecture.md

@@ -1,0 +1,180 @@
+# TDD Plugin - Specifications Manifest
+# Tracks relationships between specs, tests, and implementation files
+
+project:
+  name: "[Project Name]"
+  initialized: YYYY-MM-DD
+  tddEnforcement: advisory  # advisory | strict | graduated
+  defaultCoverage:
+    line: 80
+    branch: 75
+
+features:
+  # Example feature entry - duplicate this structure for each feature
+  - name: example-feature
+    status: planning  # planning | in-progress | testing | complete | archived
+    created: YYYY-MM-DD
+    lastModified: YYYY-MM-DD
+    owner: "[Owner Name]"
+
+    # Specification documents
+    specifications:
+      prd: "docs/specs/example-feature/prd.md"
+      technicalSpec: "docs/specs/example-feature/technical-spec.md"
+      functionalRequirements: "docs/specs/example-feature/requirements.md"
+      adrs:
+        - "docs/adrs/0001-example-decision.md"
+
+    # Test files
+    tests:
+      unit:
+        - path: "tests/unit/example.test.js"
+          coverage:
+            line: 85
+            branch: 80
+          framework: jest
+          status: passing
+        - path: "tests/unit/example-helper.test.js"
+          coverage:
+            line: 90
+            branch: 85
+          framework: jest
+          status: passing
+
+      integration:
+        - path: "tests/integration/example-api.test.js"
+          coverage:
+            line: 75
+            branch: 70
+          framework: jest
+          status: passing
+
+      e2e:
+        - path: "tests/e2e/example-flow.test.js"
+          framework: jest
+          status: passing
+
+    # Implementation files
+    implementation:
+      - path: "src/example/main.js"
+        testCoverage:
+          line: 87
+          branch: 82
+        lastModified: YYYY-MM-DD
+
+      - path: "src/example/helper.js"
+        testCoverage:
+          line: 92
+          branch: 88
+        lastModified: YYYY-MM-DD
+
+    # Overall metrics
+    metrics:
+      totalTests: 4
+      passingTests: 4
+      failingTests: 0
+      overallCoverage:
+        line: 85
+        branch: 80
+      tddCompliance: 100  # Percentage of files with tests written first
+      specCompleteness: 100  # Percentage of requirements with tests
+
+    # TDD compliance tracking
+    compliance:
+      specsBeforeTests: true
+      testsBeforeCode: true
+      violations: []
+      exemptions:
+        - "src/example/legacy.js"  # Reason: Legacy code, exempt from TDD
+
+    # Related issues/PRs
+    references:
+      issues:
+        - "#123"
+      pullRequests:
+        - "#456"
+
+  # Add more features below following the same structure
+  # - name: another-feature
+  #   status: planning
+  #   ...
+
+# Global exemptions (files/patterns that bypass TDD requirements)
+globalExemptions:
+  - "scripts/**"
+  - "docs/**"
+  - "*.config.js"
+  - "migrations/**"
+
+# Per-directory overrides
+directoryOverrides:
+  "src/core/**":
+    enforcement: strict
+    coverage:
+      line: 90
+      branch: 85
+
+  "src/legacy/**":
+    enforcement: advisory
+    coverage:
+      line: 60
+      branch: 50
+
+# Language-specific settings
+languages:
+  javascript:
+    framework: jest
+    coverage:
+      line: 85
+      branch: 80
+    testPattern: "**/*.test.js"
+
+  typescript:
+    framework: jest
+    coverage:
+      line: 85
+      branch: 80
+    testPattern: "**/*.test.ts"
+
+  python:
+    framework: pytest
+    coverage:
+      line: 90
+      branch: 85
+    testPattern: "**/*_test.py"
+
+  go:
+    framework: gotest
+    coverage:
+      line: 80
+      branch: 75
+    testPattern: "**/*_test.go"
+
+  ruby:
+    framework: rspec
+    coverage:
+      line: 85
+      branch: 80
+    testPattern: "**/*_spec.rb"
+
+# Violation tracking
+violations:
+  total: 0
+  byType:
+    missingTests: 0
+    missingSpecs: 0
+    lowCoverage: 0
+    testAfterCode: 0
+  history:
+    # Example violation entry
+    # - timestamp: YYYY-MM-DDTHH:MM:SSZ
+    #   type: missingTests
+    #   file: "src/example/new-file.js"
+    #   message: "Code written without corresponding tests"
+    #   resolved: false
+
+# Metadata
+metadata:
+  manifestVersion: "1.0.0"
+  lastUpdated: YYYY-MM-DD
+  generatedBy: "tdd-plugin"

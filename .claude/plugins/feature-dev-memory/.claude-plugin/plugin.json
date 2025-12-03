@@ -1,0 +1,9 @@
+{
+  "name": "feature-dev-memory",
+  "version": "1.0.0",
+  "description": "Captures and persists feature specifications and task breakdowns from feature-dev workflow to project memory",
+  "author": {
+    "name": "Claude Code User",
+    "email": "user@example.com"
+  }
+}
