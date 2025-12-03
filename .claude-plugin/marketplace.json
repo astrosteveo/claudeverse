@@ -10,8 +10,8 @@
       "description": "Enforces Spec and Test Driven Development workflows with PRD creation, technical specifications, functional requirements documentation, test-first development, and automated validation hooks",
       "version": "0.1.0",
       "author": {
-        "name": "Claude Code Community",
-        "email": "community@claude.ai"
+        "name": "AstroSteveo",
+        "email": "astrosteveo@noreply.githubusers.com"
       },
       "license": "MIT",
       "keywords": [
@@ -23,6 +23,27 @@
         "quality",
         "documentation",
         "coverage"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "programming-tutor",
+      "source": "./plugins/programming-tutor",
+      "description": "Guided interactive programming lessons and exercises tailored to your learning style",
+      "version": "0.1.0",
+      "author": {
+        "name": "AstroSteveo",
+        "email": "astrosteveo@noreply.githubusers.com"
+      },
+
+      "license": "MIT",
+      "keywords": [
+        "tutoring",
+        "programming",
+        "coding",
+        "lessons",
+        "learning",
+        "eductional"
       ],
       "category": "development"
     }
