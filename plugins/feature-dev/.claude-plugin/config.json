@@ -1,0 +1,14 @@
+{
+  "name": "feature-dev",
+  "version": "1.0.0",
+  "description": "Structured feature development workflow with codebase exploration, architecture design, and quality review",
+  "author": "Based on Anthropic's feature-dev plugin",
+  "commands": [
+    "feature-dev"
+  ],
+  "agents": [
+    "code-explorer",
+    "code-architect",
+    "code-reviewer"
+  ]
+}
