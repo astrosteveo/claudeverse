@@ -1,4 +1,4 @@
----
+ca---
 description: Guided TDD workflow from specification to implementation
 argument-hint: Optional feature name or description
 allowed-tools:
@@ -124,24 +124,38 @@ Initial request: $ARGUMENTS
 **IMPORTANT**: Before starting, verify we have failing tests from Phase 3
 
 **Actions**:
-1. Read existing codebase to understand patterns
-2. If feature-dev plugin is available, consider using:
-   - `code-explorer` agent for codebase understanding
-   - `code-architect` agent for design approaches
+1. **Explore codebase patterns** (for existing codebases):
+   - Launch 2-3 `agent-feature-dev:code-explorer` agents in parallel using the Task tool
+   - Each agent should explore different aspects (similar features, architecture, patterns)
+   - Read the key files identified by the agents
+   - Example Task prompts:
+     - "Find features similar to [feature] and trace implementation comprehensively"
+     - "Map the architecture and abstractions for [feature area]"
+     - "Identify testing patterns and conventions in the codebase"
+
+2. **Design implementation approach**:
+   - Launch 2-3 `agent-feature-dev:code-architect` agents in parallel using the Task tool
+   - Each agent focuses on different approach: minimal changes, clean architecture, pragmatic balance
+   - Review all approaches and select the best fit
+   - Example Task prompt:
+     - "Design implementation approaches for [feature] with different trade-offs"
+
 3. For each failing test:
    - Identify what code needs to be written
    - Write MINIMAL implementation to pass the test
    - Run tests after each change
    - Continue until test passes
+
 4. Track progress using TodoWrite:
    - Mark each requirement in_progress when starting
    - Mark completed when its test passes
+
 5. Run full test suite after each requirement
 
 **Constraints**:
 - Only write code needed to pass current test
 - No extra features or edge cases not covered by tests
-- Follow existing codebase conventions
+- Follow existing codebase conventions identified by code-explorer agents
 
 ---
 
@@ -166,8 +180,16 @@ Initial request: $ARGUMENTS
    ```bash
    ${CLAUDE_PLUGIN_ROOT}/scripts/validate-coverage.sh
    ```
-3. If feature-dev plugin is available, consider using `code-reviewer` agent
-4. Address any critical issues found
+3. **Launch quality review agents**:
+   - Launch 3 `agent-feature-dev:code-reviewer` agents in parallel using the Task tool
+   - Each agent focuses on different aspects: simplicity/DRY/elegance, bugs/functional correctness, project conventions/abstractions
+   - Consolidate findings and identify high-severity issues
+   - Example Task prompts:
+     - "Review code for simplicity, DRY principles, and elegance"
+     - "Review code for bugs and functional correctness"
+     - "Review code for adherence to project conventions and proper use of abstractions"
+4. Present findings to user and ask what to address
+5. Fix critical issues while keeping tests green
 
 **Output**: Clean, tested implementation
 
@@ -209,7 +231,7 @@ Initial request: $ARGUMENTS
 - Create directory structure as needed
 
 ### Existing codebase:
-- Use feature-dev agents if available for exploration
+- Launch feature-dev agents for exploration (Phase 4)
 - Follow existing patterns strictly
 - Run existing tests to ensure no regressions
 
@@ -242,15 +264,29 @@ If user provides specific behavior to test:
 
 ---
 
-## Integration with feature-dev
+## Integration with feature-dev Plugin
 
-If the feature-dev plugin is installed, this workflow integrates with its agents:
+This TDD workflow is designed to integrate seamlessly with the feature-dev plugin's specialized agents:
 
-- **Phase 2**: Can use exploration to understand similar existing features
-- **Phase 4**: Uses `code-explorer` and `code-architect` for implementation planning
-- **Phase 5**: Uses `code-reviewer` for quality review
+**Phase 4 (Implementation):**
+- Launches `agent-feature-dev:code-explorer` agents to understand codebase patterns and architecture
+- Launches `agent-feature-dev:code-architect` agents to design implementation approaches
+- These agents run in parallel for efficiency
+- Read all files identified by agents before implementing
 
-If feature-dev is not installed, the workflow operates standalone using its own exploration and review.
+**Phase 5 (Refactor & Validate):**
+- Launches `agent-feature-dev:code-reviewer` agents in parallel
+- Each agent focuses on different quality aspects
+- Consolidates findings and presents actionable recommendations
+
+**How to use:**
+Simply run `/tdd-plugin:tdd <feature>` - the workflow will automatically leverage feature-dev agents when analyzing code, designing architecture, and reviewing quality.
+
+**Benefits of integration:**
+- Deeper codebase understanding through comprehensive exploration
+- Multiple architectural perspectives before implementation
+- Systematic quality review from different angles
+- Parallel agent execution for faster workflow
 
 ---
 
