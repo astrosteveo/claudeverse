@@ -246,10 +246,13 @@ The `tdd-practices` skill activates when you ask about:
 
 Templates in `templates/`:
 - `prd-template.md` - Product Requirements Document
+- `gdd-template.md` - Game Design Document (for gamedev projects)
 - `technical-spec-template.md` - Technical Specification
 - `functional-requirements-template.md` - Functional Requirements
 - `test-case-template.md` - Test Case Template
 - `adr-template.md` - Architecture Decision Record (full template)
+
+**Note**: For game development projects, both PRD and GDD are created. The PRD covers business/product requirements while the GDD covers game-specific design (mechanics, art direction, audio, etc.).
 
 ## Language Support
 

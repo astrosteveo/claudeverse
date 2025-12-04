@@ -61,12 +61,19 @@ Initial request: $ARGUMENTS
    - `prd.md` - Product Requirements Document
    - `technical-spec.md` - Technical Specification
    - `requirements.md` - Functional Requirements
-3. Ask user to fill key sections OR help draft them:
+   - `gdd.md` - Game Design Document (**gamedev projects only**)
+3. **Detect gamedev context** by checking for:
+   - Game engines: Unity (`*.unity`, `ProjectSettings/`), Godot (`project.godot`), Unreal (`*.uproject`)
+   - Game libraries: pygame, LÖVE, Phaser, libGDX
+   - Game-related directories: `Assets/`, `Scenes/`, `Sprites/`, `Levels/`
+   - If gamedev detected, create GDD alongside PRD
+4. Ask user to fill key sections OR help draft them:
    - Problem statement
    - User stories with acceptance criteria
    - Key functional requirements (FR-001, FR-002, etc.)
-4. Update `.claude/specs-manifest.yaml` with new feature
-5. Write feature name to `.claude/current-feature.txt`
+   - For gamedev: Core gameplay loop, mechanics, art/audio direction
+5. Update `.claude/specs-manifest.yaml` with new feature
+6. Write feature name to `.claude/current-feature.txt`
 
 ### For existing features:
 1. Read existing specs from `docs/specs/<feature>/`

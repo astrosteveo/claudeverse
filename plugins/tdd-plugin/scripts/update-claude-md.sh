@@ -125,7 +125,15 @@ if [[ "$CURRENT_FEATURE" != "None" && -d "${PROJECT_ROOT}/docs/specs/${CURRENT_F
     TDD_SECTION+="
 ### Active Feature: ${CURRENT_FEATURE}
 
-- PRD: \`docs/specs/${CURRENT_FEATURE}/prd.md\`
+- PRD: \`docs/specs/${CURRENT_FEATURE}/prd.md\`"
+
+    # Add GDD if it exists (gamedev projects)
+    if [[ -f "${PROJECT_ROOT}/docs/specs/${CURRENT_FEATURE}/gdd.md" ]]; then
+        TDD_SECTION+="
+- GDD: \`docs/specs/${CURRENT_FEATURE}/gdd.md\`"
+    fi
+
+    TDD_SECTION+="
 - Tech Spec: \`docs/specs/${CURRENT_FEATURE}/technical-spec.md\`
 - Requirements: \`docs/specs/${CURRENT_FEATURE}/requirements.md\`
 

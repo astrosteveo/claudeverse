@@ -20,6 +20,7 @@ features:
     # Specification documents
     specifications:
       prd: "docs/specs/example-feature/prd.md"
+      gdd: null  # "docs/specs/example-feature/gdd.md" (gamedev projects only)
       technicalSpec: "docs/specs/example-feature/technical-spec.md"
       functionalRequirements: "docs/specs/example-feature/requirements.md"
       adrs:
