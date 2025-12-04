@@ -35,7 +35,6 @@
         "name": "AstroSteveo",
         "email": "astrosteveo@noreply.githubusers.com"
       },
-
       "license": "MIT",
       "keywords": [
         "tutoring",
@@ -46,6 +45,234 @@
         "eductional"
       ],
       "category": "development"
+    },
+    {
+      "name": "feature-dev",
+      "source": "./plugins/feature-dev",
+      "description": "Structured 7-phase feature development workflow with codebase exploration, architecture design, and quality review",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "feature-development",
+        "architecture",
+        "code-review",
+        "workflow",
+        "agents"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "pr-review-toolkit",
+      "source": "./plugins/pr-review-toolkit",
+      "description": "Comprehensive PR review with 6 specialized agents for deep code analysis",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "pr-review",
+        "code-review",
+        "quality",
+        "agents"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "plugin-dev",
+      "source": "./plugins/plugin-dev",
+      "description": "Toolkit for building Claude Code plugins with agent creators and validators",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "plugin-development",
+        "agents",
+        "skills",
+        "toolkit"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "code-review",
+      "source": "./plugins/code-review",
+      "description": "Automated PR reviews with 5 parallel agents",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "code-review",
+        "pr",
+        "automation"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "security-guidance",
+      "source": "./plugins/security-guidance",
+      "description": "Security monitoring and best practices enforcement",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "security",
+        "monitoring",
+        "best-practices"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "commit-commands",
+      "source": "./plugins/commit-commands",
+      "description": "Git automation helpers for commits, pushes, and PRs",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "git",
+        "automation",
+        "commit",
+        "pr"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "hookify",
+      "source": "./plugins/hookify",
+      "description": "Custom hooks development toolkit with rule engine",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "hooks",
+        "customization",
+        "rules"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "frontend-design",
+      "source": "./plugins/frontend-design",
+      "description": "Design system and component workflow for frontend development",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "frontend",
+        "design-system",
+        "components",
+        "ui"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "agent-sdk-dev",
+      "source": "./plugins/agent-sdk-dev",
+      "description": "Tools for Agent SDK development in TypeScript and Python",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "agent-sdk",
+        "development",
+        "typescript",
+        "python"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "explanatory-output-style",
+      "source": "./plugins/explanatory-output-style",
+      "description": "Educational output style with detailed explanations",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "output-style",
+        "educational",
+        "explanations"
+      ],
+      "category": "customization"
+    },
+    {
+      "name": "learning-output-style",
+      "source": "./plugins/learning-output-style",
+      "description": "Beginner-friendly output style for learners",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "output-style",
+        "learning",
+        "beginner-friendly"
+      ],
+      "category": "customization"
+    },
+    {
+      "name": "claude-opus-4-5-migration",
+      "source": "./plugins/claude-opus-4-5-migration",
+      "description": "Migration tools for Claude Opus 4.5 features",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "migration",
+        "opus-4-5",
+        "upgrade"
+      ],
+      "category": "utilities"
+    },
+    {
+      "name": "ralph-wiggum",
+      "source": "./plugins/ralph-wiggum",
+      "description": "Autonomous coding agent that continuously works (use with caution!)",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic",
+        "url": "https://github.com/anthropics/claude-code"
+      },
+      "license": "MIT",
+      "keywords": [
+        "autonomous",
+        "loop",
+        "experimental"
+      ],
+      "category": "experimental"
     }
   ]
 }
