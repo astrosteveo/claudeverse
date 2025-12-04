@@ -1,4 +1,4 @@
-ca---
+---
 description: Guided TDD workflow from specification to implementation
 argument-hint: Optional feature name or description
 allowed-tools:
