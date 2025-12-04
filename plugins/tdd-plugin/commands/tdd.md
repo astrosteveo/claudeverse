@@ -11,19 +11,21 @@ allowed-tools:
   - TodoWrite
   - Task
   - AskUserQuestion
+  - SlashCommand
 ---
 
 # TDD Workflow
 
-Guide feature development using Test-Driven Development methodology. This command walks through a phased workflow: specification, test design, implementation, and validation.
+Guide feature development using Test-Driven Development methodology. This command integrates with `/feature-dev:feature-dev` to provide a complete workflow: specification, test design, implementation with codebase understanding, and validation.
 
 ## Core Principles
 
 - **Spec before tests**: Understand what to build before writing tests
 - **Tests before code**: Write failing tests before implementation
-- **Minimal implementation**: Write only enough code to pass tests
+- **Understand before implementing**: Use feature-dev for codebase exploration and architecture
+- **Document decisions**: Create ADRs for significant architectural choices
 - **Continuous validation**: Run tests at every step
-- **Ask questions early**: Clarify requirements before designing tests
+- **Track everything**: Use TodoWrite throughout
 
 ---
 
@@ -34,7 +36,7 @@ Guide feature development using Test-Driven Development methodology. This comman
 Initial request: $ARGUMENTS
 
 **Actions**:
-1. Create todo list with all 6 phases
+1. Create todo list with all phases
 2. If feature is clear from arguments:
    - Check if `.claude/current-feature.txt` exists for active feature context
    - Check if specs exist in `docs/specs/<feature>/`
@@ -64,7 +66,7 @@ Initial request: $ARGUMENTS
    - `gdd.md` - Game Design Document (**gamedev projects only**)
 3. **Detect gamedev context** by checking for:
    - Game engines: Unity (`*.unity`, `ProjectSettings/`), Godot (`project.godot`), Unreal (`*.uproject`)
-   - Game libraries: pygame, LÖVE, Phaser, libGDX
+   - Game libraries: pygame, LOVE, Phaser, libGDX
    - Game-related directories: `Assets/`, `Scenes/`, `Sprites/`, `Levels/`
    - If gamedev detected, create GDD alongside PRD
 4. Ask user to fill key sections OR help draft them:
@@ -89,7 +91,7 @@ Initial request: $ARGUMENTS
 
 ## Phase 3: Test Design
 
-**Goal**: Identify test cases and write failing tests
+**Goal**: Identify test cases and write failing tests (RED phase)
 
 **Actions**:
 1. Read `docs/specs/<feature>/requirements.md`
@@ -117,55 +119,52 @@ Initial request: $ARGUMENTS
 
 ---
 
-## Phase 4: Implementation
+## Phase 4: Implementation via feature-dev
 
-**Goal**: Write minimal code to pass tests (GREEN phase)
+**Goal**: Implement code to pass tests (GREEN phase) using feature-dev's structured approach
 
 **IMPORTANT**: Before starting, verify we have failing tests from Phase 3
 
 **Actions**:
-1. **Explore codebase patterns** (for existing codebases):
-   - Launch 2-3 `agent-feature-dev:code-explorer` agents in parallel using the Task tool
-   - Each agent should explore different aspects (similar features, architecture, patterns)
-   - Read the key files identified by the agents
-   - Example Task prompts:
-     - "Find features similar to [feature] and trace implementation comprehensively"
-     - "Map the architecture and abstractions for [feature area]"
-     - "Identify testing patterns and conventions in the codebase"
 
-2. **Design implementation approach**:
-   - Launch 2-3 `agent-feature-dev:code-architect` agents in parallel using the Task tool
-   - Each agent focuses on different approach: minimal changes, clean architecture, pragmatic balance
-   - Review all approaches and select the best fit
-   - Example Task prompt:
-     - "Design implementation approaches for [feature] with different trade-offs"
+### Hand off to feature-dev:
+1. Summarize context for feature-dev:
+   - The feature being implemented
+   - The requirements from specs
+   - The failing tests that need to pass
+   - Any constraints or patterns identified
 
-3. For each failing test:
-   - Identify what code needs to be written
-   - Write MINIMAL implementation to pass the test
-   - Run tests after each change
-   - Continue until test passes
+2. **Invoke `/feature-dev:feature-dev`** using the SlashCommand tool with the feature context
 
-4. Track progress using TodoWrite:
-   - Mark each requirement in_progress when starting
-   - Mark completed when its test passes
+   feature-dev will handle:
+   - **Codebase Exploration**: Launch code-explorer agents to understand existing patterns
+   - **Clarifying Questions**: Resolve ambiguities before designing
+   - **Architecture Design**: Launch code-architect agents to design approaches
+   - **ADR Creation**: After architecture is decided, create an ADR using `/tdd-plugin:adr` to document the decision
+   - **Implementation**: Build the feature following chosen architecture
+   - **Quality Review**: Launch code-reviewer agents for comprehensive review
 
-5. Run full test suite after each requirement
+3. **After feature-dev completes**:
+   - Run tests to verify implementation passes (GREEN phase)
+   - If tests fail, work with user to debug and fix
+   - Track progress in TodoWrite
 
 **Constraints**:
-- Only write code needed to pass current test
+- Only write code needed to pass current tests
 - No extra features or edge cases not covered by tests
-- Follow existing codebase conventions identified by code-explorer agents
+- Follow existing codebase conventions
+
+**Key integration point**: When feature-dev reaches Architecture Design phase and makes a decision, it should invoke `/tdd-plugin:adr <architecture decision title>` to document the decision before proceeding to implementation.
 
 ---
 
 ## Phase 5: Refactor & Validate
 
-**Goal**: Improve code quality while maintaining passing tests
+**Goal**: Improve code quality while maintaining passing tests (REFACTOR phase)
 
 **Actions**:
 
-### Refactoring (REFACTOR phase):
+### Refactoring:
 1. Review implementation for code smells:
    - Duplication
    - Long methods
@@ -180,18 +179,10 @@ Initial request: $ARGUMENTS
    ```bash
    ${CLAUDE_PLUGIN_ROOT}/scripts/validate-coverage.sh
    ```
-3. **Launch quality review agents**:
-   - Launch 3 `agent-feature-dev:code-reviewer` agents in parallel using the Task tool
-   - Each agent focuses on different aspects: simplicity/DRY/elegance, bugs/functional correctness, project conventions/abstractions
-   - Consolidate findings and identify high-severity issues
-   - Example Task prompts:
-     - "Review code for simplicity, DRY principles, and elegance"
-     - "Review code for bugs and functional correctness"
-     - "Review code for adherence to project conventions and proper use of abstractions"
-4. Present findings to user and ask what to address
-5. Fix critical issues while keeping tests green
+3. Present any remaining issues to user
+4. Fix critical issues while keeping tests green
 
-**Output**: Clean, tested implementation
+**Output**: Clean, tested, refactored implementation
 
 ---
 
@@ -204,6 +195,7 @@ Initial request: $ARGUMENTS
 2. Update `.claude/specs-manifest.yaml`:
    - Set feature status to `implemented` or `tested`
    - Link test files to requirements
+   - Reference any ADRs created
 3. Generate summary:
    ```
    TDD Cycle Complete: <feature-name>
@@ -211,6 +203,7 @@ Initial request: $ARGUMENTS
    Requirements implemented: X/X
    Test files: [list]
    Implementation files: [list]
+   ADRs created: [list if any]
 
    Coverage: Run /tdd-plugin:check for detailed report
 
@@ -226,12 +219,12 @@ Initial request: $ARGUMENTS
 ## Adapting to Context
 
 ### Greenfield project (no existing code):
-- Skip codebase exploration in Phase 4
+- feature-dev will skip extensive codebase exploration
 - Focus on establishing conventions early
 - Create directory structure as needed
 
 ### Existing codebase:
-- Launch feature-dev agents for exploration (Phase 4)
+- feature-dev will thoroughly explore existing patterns
 - Follow existing patterns strictly
 - Run existing tests to ensure no regressions
 
@@ -239,7 +232,7 @@ Initial request: $ARGUMENTS
 If user provides specific behavior to test:
 1. Skip to Phase 3 with that behavior
 2. Write single failing test
-3. Implement minimal code
+3. Implement minimal code (can skip feature-dev for simple cases)
 4. Refactor if needed
 5. Brief summary
 
@@ -264,48 +257,65 @@ If user provides specific behavior to test:
 
 ---
 
-## Integration with feature-dev Plugin
+## Integration Architecture
 
-This TDD workflow is designed to integrate seamlessly with the feature-dev plugin's specialized agents:
+This TDD workflow integrates with feature-dev for a complete development experience:
 
-**Phase 4 (Implementation):**
-- Launches `agent-feature-dev:code-explorer` agents to understand codebase patterns and architecture
-- Launches `agent-feature-dev:code-architect` agents to design implementation approaches
-- These agents run in parallel for efficiency
-- Read all files identified by agents before implementing
-
-**Phase 5 (Refactor & Validate):**
-- Launches `agent-feature-dev:code-reviewer` agents in parallel
-- Each agent focuses on different quality aspects
-- Consolidates findings and presents actionable recommendations
-
-**How to use:**
-Simply run `/tdd-plugin:tdd <feature>` - the workflow will automatically leverage feature-dev agents when analyzing code, designing architecture, and reviewing quality.
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    /tdd-plugin:tdd                          │
+├─────────────────────────────────────────────────────────────┤
+│  Phase 1: Discovery                                         │
+│  Phase 2: Specification (PRD, requirements)                 │
+│  Phase 3: Test Design (RED - write failing tests)           │
+├─────────────────────────────────────────────────────────────┤
+│                          ↓                                  │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │              /feature-dev:feature-dev                 │  │
+│  ├───────────────────────────────────────────────────────┤  │
+│  │  • Codebase Exploration (code-explorer agents)        │  │
+│  │  • Clarifying Questions                               │  │
+│  │  • Architecture Design (code-architect agents)        │  │
+│  │      └─→ /tdd-plugin:adr (document decision)          │  │
+│  │  • Implementation                                     │  │
+│  │  • Quality Review (code-reviewer agents)              │  │
+│  └───────────────────────────────────────────────────────┘  │
+│                          ↓                                  │
+│  Phase 5: Validate (run tests, check coverage)              │
+│  Phase 6: Summary (document everything)                     │
+└─────────────────────────────────────────────────────────────┘
+```
 
 **Benefits of integration:**
-- Deeper codebase understanding through comprehensive exploration
-- Multiple architectural perspectives before implementation
-- Systematic quality review from different angles
-- Parallel agent execution for faster workflow
+- TDD provides structure: specs, tests-first, documentation, progress tracking
+- feature-dev provides depth: codebase understanding, architecture design, quality review
+- ADRs capture decisions: architectural choices are documented for future reference
+- Complete audit trail: specs → tests → architecture → implementation → validation
 
 ---
 
 ## Example Usage
 
 ### Start new feature:
+
 ```
-/tdd user-authentication
+/tdd-plugin:tdd user-authentication
 ```
-Creates specs, writes tests, implements feature.
+
+Creates specs, writes tests, invokes feature-dev for implementation, validates.
 
 ### Continue existing feature:
+
 ```
-/tdd
+/tdd-plugin:tdd
 ```
+
 Loads current feature from `.claude/current-feature.txt` and continues.
 
 ### Quick single test:
+
 ```
-/tdd validate that email addresses contain @
+/tdd-plugin:tdd validate that email addresses contain @
 ```
+
 Runs single RED-GREEN-REFACTOR cycle for that specific behavior.

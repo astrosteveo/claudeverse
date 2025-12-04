@@ -1,6 +1,17 @@
 ---
 description: Guided feature development with codebase understanding and architecture focus
 argument-hint: Optional feature description
+allowed-tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Glob
+  - Grep
+  - TodoWrite
+  - Task
+  - AskUserQuestion
+  - SlashCommand
 ---
 
 # Feature Development
@@ -79,6 +90,7 @@ If the user says "whatever you think is best", provide your recommendation and g
 2. Review all approaches and form your opinion on which fits best for this specific task (consider: small fix vs large feature, urgency, complexity, team context)
 3. Present to user: brief summary of each approach, trade-offs comparison, **your recommendation with reasoning**, concrete implementation differences
 4. **Ask user which approach they prefer**
+5. **After user chooses approach**: Create an ADR to document the decision using `/tdd-plugin:adr <decision title>` - this captures the architectural choice, alternatives considered, and rationale for future reference
 
 ---
 
