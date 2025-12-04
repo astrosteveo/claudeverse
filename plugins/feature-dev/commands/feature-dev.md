@@ -1,29 +1,19 @@
 ---
 description: Guided feature development with codebase understanding and architecture focus
-argument-hint: Feature description or name
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
-  - TodoWrite
-  - Task
-  - AskUserQuestion
+argument-hint: Optional feature description
 ---
 
-# Feature Development Workflow
+# Feature Development
 
-Guide feature development through systematic codebase analysis, clarification, design, and implementation.
+You are helping a developer implement a new feature. Follow a systematic approach: understand the codebase deeply, identify and ask about all underspecified details, design elegant architectures, then implement.
 
 ## Core Principles
 
-- **Ask First**: Identify ambiguities and edge cases before implementation
-- **Understand Deeply**: Read files identified by exploration agents to build context
-- **Design Before Code**: Architecture decisions precede implementation
-- **Quality Focus**: Readable, maintainable, architecturally sound code
-- **Track Progress**: Use TodoWrite throughout
+- **Ask clarifying questions**: Identify all ambiguities, edge cases, and underspecified behaviors. Ask specific, concrete questions rather than making assumptions. Wait for user answers before proceeding with implementation. Ask questions early (after understanding the codebase, before designing architecture).
+- **Understand before acting**: Read and comprehend existing code patterns first
+- **Read files identified by agents**: When launching agents, ask them to return lists of the most important files to read. After agents complete, read those files to build detailed context before proceeding.
+- **Simple and elegant**: Prioritize readable, maintainable, architecturally sound code
+- **Use TodoWrite**: Track all progress throughout
 
 ---
 
@@ -31,225 +21,105 @@ Guide feature development through systematic codebase analysis, clarification, d
 
 **Goal**: Understand what needs to be built
 
-**Input**: $ARGUMENTS
+Initial request: $ARGUMENTS
 
 **Actions**:
-1. Create todo list with all 7 phases
-2. If feature is clear from arguments, summarize understanding
-3. If unclear, ask clarifying questions:
-   - What problem does this solve?
-   - Who are the users?
-   - What are the constraints?
-4. Confirm understanding with user before proceeding
-
-**Output**: Clear, agreed-upon feature definition
+1. Create todo list with all phases
+2. If feature unclear, ask user for:
+   - What problem are they solving?
+   - What should the feature do?
+   - Any constraints or requirements?
+3. Summarize understanding and confirm with user
 
 ---
 
 ## Phase 2: Codebase Exploration
 
-**Goal**: Understand existing patterns and relevant code
+**Goal**: Understand relevant existing code and patterns at both high and low levels
 
 **Actions**:
-1. Launch 2-3 `code-explorer` agents in parallel targeting:
-   - Similar existing features
-   - Relevant architecture layers
-   - Related implementation patterns
-2. Read the key files identified by explorers
-3. Synthesize findings into a codebase summary
+1. Launch 2-3 code-explorer agents in parallel. Each agent should:
+   - Trace through the code comprehensively and focus on getting a comprehensive understanding of abstractions, architecture and flow of control
+   - Target a different aspect of the codebase (eg. similar features, high level understanding, architectural understanding, user experience, etc)
+   - Include a list of 5-10 key files to read
 
-**Agent Prompts**:
-```
-Explore how [similar feature] is implemented. Focus on:
-- Entry points and API surface
-- Data flow and transformations
-- Patterns and conventions used
-```
+   **Example agent prompts**:
+   - "Find features similar to [feature] and trace through their implementation comprehensively"
+   - "Map the architecture and abstractions for [feature area], tracing through the code comprehensively"
+   - "Analyze the current implementation of [existing feature/area], tracing through the code comprehensively"
+   - "Identify UI patterns, testing approaches, or extension points relevant to [feature]"
 
-```
-Analyze the [layer] architecture. Document:
-- Component responsibilities
-- Integration patterns
-- Error handling approach
-```
-
-**Output**: Codebase context document with key files and patterns
+2. Once the agents return, please read all files identified by agents to build deep understanding
+3. Present comprehensive summary of findings and patterns discovered
 
 ---
 
 ## Phase 3: Clarifying Questions
 
-**Goal**: Resolve all ambiguities before design
+**Goal**: Fill in gaps and resolve all ambiguities before designing
+
+**CRITICAL**: This is one of the most important phases. DO NOT SKIP.
 
 **Actions**:
-1. Based on exploration, identify underspecified aspects:
-   - Edge cases and boundary conditions
-   - Error handling requirements
-   - Integration points with existing code
-   - Scope boundaries (what's in/out)
-   - Performance requirements
-   - Security considerations
-2. Present ALL questions to user at once
-3. **Wait for answers before proceeding**
+1. Review the codebase findings and original feature request
+2. Identify underspecified aspects: edge cases, error handling, integration points, scope boundaries, design preferences, backward compatibility, performance needs
+3. **Present all questions to the user in a clear, organized list**
+4. **Wait for answers before proceeding to architecture design**
 
-**Output**: Complete requirements with no ambiguity
+If the user says "whatever you think is best", provide your recommendation and get explicit confirmation.
 
 ---
 
 ## Phase 4: Architecture Design
 
-**Goal**: Design the implementation approach
+**Goal**: Design multiple implementation approaches with different trade-offs
 
 **Actions**:
-1. Launch 2-3 `code-architect` agents exploring different approaches:
-   - Minimal changes approach
-   - Clean architecture approach
-   - Pragmatic balance approach
-2. Present trade-offs for each approach:
-   - Complexity vs flexibility
-   - Time to implement vs maintainability
-   - Risk factors
-3. Make a recommendation
-4. **Request explicit user preference**
-
-**Agent Prompts**:
-```
-Design a minimal-changes architecture for [feature].
-Prioritize: smallest diff, reuse existing patterns.
-```
-
-```
-Design a clean architecture for [feature].
-Prioritize: separation of concerns, testability, extensibility.
-```
-
-**Output**: Approved architecture blueprint
+1. Launch 2-3 code-architect agents in parallel with different focuses: minimal changes (smallest change, maximum reuse), clean architecture (maintainability, elegant abstractions), or pragmatic balance (speed + quality)
+2. Review all approaches and form your opinion on which fits best for this specific task (consider: small fix vs large feature, urgency, complexity, team context)
+3. Present to user: brief summary of each approach, trade-offs comparison, **your recommendation with reasoning**, concrete implementation differences
+4. **Ask user which approach they prefer**
 
 ---
 
 ## Phase 5: Implementation
 
-**Goal**: Build the feature following the approved design
+**Goal**: Build the feature
 
-**IMPORTANT**: Do not start until user explicitly approves architecture
+**DO NOT START WITHOUT USER APPROVAL**
 
 **Actions**:
-1. Read all relevant files identified in exploration
-2. Implement following the chosen architecture
-3. Respect existing codebase conventions
-4. Write tests alongside implementation
-5. Update todos as each component is completed
-6. Run tests frequently to catch issues early
-
-**Constraints**:
-- Follow patterns discovered in Phase 2
-- Match existing code style exactly
-- Add appropriate error handling
-- Include logging consistent with project
-
-**Output**: Working implementation with tests
+1. Wait for explicit user approval
+2. Read all relevant files identified in previous phases
+3. Implement following chosen architecture
+4. Follow codebase conventions strictly
+5. Write clean, well-documented code
+6. Update todos as you progress
 
 ---
 
 ## Phase 6: Quality Review
 
-**Goal**: Ensure code meets quality standards
+**Goal**: Ensure code is simple, DRY, elegant, easy to read, and functionally correct
 
 **Actions**:
-1. Launch 3 `code-reviewer` agents with different focuses:
-   - **Simplicity**: Is the code as simple as possible?
-   - **Correctness**: Does it handle all cases correctly?
-   - **Conventions**: Does it follow project guidelines?
-2. Compile findings from all reviewers
-3. Present issues by severity (Critical > Important)
-4. **Ask user how to proceed**:
-   - Fix all issues
-   - Fix critical only
-   - Defer to follow-up PR
-
-**Agent Prompts**:
-```
-Review for simplicity and elegance. Flag:
-- Unnecessary complexity
-- Over-engineering
-- Code that could be simplified
-```
-
-```
-Review for correctness. Flag:
-- Logic errors
-- Missing edge cases
-- Error handling gaps
-```
-
-```
-Review for conventions. Flag:
-- Style inconsistencies
-- Pattern violations
-- Missing tests
-```
-
-**Output**: Clean, reviewed code ready for merge
+1. Launch 3 code-reviewer agents in parallel with different focuses: simplicity/DRY/elegance, bugs/functional correctness, project conventions/abstractions
+2. Consolidate findings and identify highest severity issues that you recommend fixing
+3. **Present findings to user and ask what they want to do** (fix now, fix later, or proceed as-is)
+4. Address issues based on user decision
 
 ---
 
 ## Phase 7: Summary
 
-**Goal**: Document completion and next steps
+**Goal**: Document what was accomplished
 
 **Actions**:
 1. Mark all todos complete
-2. Generate summary:
-   ```
-   ## Feature Complete: [Feature Name]
-
-   ### What Was Built
-   - [Component 1]: Description
-   - [Component 2]: Description
-
-   ### Files Modified
-   - `path/to/file.ts` - Description of changes
-
-   ### Files Created
-   - `path/to/new/file.ts` - Purpose
-
-   ### Tests Added
-   - `path/to/test.ts` - What it tests
-
-   ### Next Steps
-   - [ ] Consider adding...
-   - [ ] May want to...
-   ```
-3. Ask if user wants to commit changes
+2. Summarize:
+   - What was built
+   - Key decisions made
+   - Files modified
+   - Suggested next steps
 
 ---
-
-## When to Use This Workflow
-
-**Good fit**:
-- New features touching multiple files
-- Complex integrations with existing code
-- Features with unclear requirements
-- Architectural decisions needed
-
-**Skip this for**:
-- Single-line bug fixes
-- Trivial changes
-- Well-defined simple tasks
-- Use `/tdd-plugin:fix` instead
-
----
-
-## Example Usage
-
-```
-/feature-dev Add user notification preferences
-
-→ Phase 1: Understanding notification preferences feature...
-→ Phase 2: Exploring existing notification and user settings code...
-→ Phase 3: Questions about notification channels, frequency options...
-→ Phase 4: Presenting architecture options...
-→ Phase 5: Implementing approved design...
-→ Phase 6: Reviewing for quality...
-→ Phase 7: Summary and commit
-```
