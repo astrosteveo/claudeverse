@@ -188,31 +188,79 @@ Initial request: $ARGUMENTS
 
 ## Phase 6: Summary
 
-**Goal**: Document completion and next steps
+**Goal**: Document completion, provide usage guidance, and clear next steps
 
 **Actions**:
-1. Mark all todos complete
-2. Update `.claude/specs-manifest.yaml`:
-   - Set feature status to `implemented` or `tested`
-   - Link test files to requirements
-   - Reference any ADRs created
-3. Generate summary:
-   ```
-   TDD Cycle Complete: <feature-name>
 
-   Requirements implemented: X/X
-   Test files: [list]
-   Implementation files: [list]
-   ADRs created: [list if any]
+### 1. Update tracking
+- Mark all todos complete
+- Update `.claude/specs-manifest.yaml`:
+  - Set feature status to `implemented` or `tested`
+  - Link test files to requirements
+  - Add coverage percentage
+  - Reference any ADRs created
+- Clear `.claude/current-feature.txt` if feature is complete
 
-   Coverage: Run /tdd-plugin:check for detailed report
+### 2. Generate usage documentation
+Provide clear examples showing how to use the implemented feature:
+- Import/require statements
+- Basic usage examples for each function/method
+- Common use cases
+- Error handling examples (if applicable)
+- Any configuration or setup required
 
-   Next steps:
-   - Run /tdd-plugin:check for compliance report
-   - Consider additional edge case tests
-   - Commit changes
-   ```
-4. Clear `.claude/current-feature.txt` if feature is complete
+Example format:
+```
+## Usage
+
+\`\`\`typescript
+import { functionName } from './path/to/module';
+
+// Basic usage
+functionName(arg1, arg2);  // → expected result
+
+// Error handling
+try {
+  functionName(invalidArg);
+} catch (error) {
+  // Handle error
+}
+\`\`\`
+```
+
+### 3. Present completion summary
+```
+## TDD Cycle Complete: <feature-name>
+
+### Requirements implemented: X/X
+| Requirement | Description | Status |
+|-------------|-------------|--------|
+| FR-001 | ... | ✓ |
+
+### Files created/modified
+**Specs:** [list spec files]
+**Tests:** [list test files with test count]
+**Implementation:** [list implementation files]
+**ADRs:** [list if any]
+
+### Coverage: X%
+
+### Usage
+[Include usage examples from step 2]
+
+### Next steps
+1. **Run compliance check**: `/tdd-plugin:check` for detailed TDD report
+2. **Review coverage**: Consider additional edge case tests if coverage < 100%
+3. **Commit changes**: All files are ready for version control
+4. **Integration**: [Any integration steps specific to the feature]
+```
+
+### 4. Offer follow-up actions
+Ask user if they want to:
+- Run `/tdd-plugin:check` for compliance report
+- Add additional edge case tests
+- Create a commit with all changes
+- Start another TDD cycle for related functionality
 
 ---
 
