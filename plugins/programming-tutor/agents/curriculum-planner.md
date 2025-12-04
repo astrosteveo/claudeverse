@@ -20,7 +20,7 @@ whenToUse: |
   <commentary>Use curriculum-planner to evaluate readiness based on progress</commentary>
   </example>
 color: orange
-model: sonnet
+model: opus
 tools:
   - Read
   - Skill

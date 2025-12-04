@@ -23,7 +23,7 @@ whenToUse: |
   <commentary>Launch adaptive-tutor agent to guide project work</commentary>
   </example>
 color: green
-model: sonnet
+model: opus
 tools:
   - Read
   - Write
