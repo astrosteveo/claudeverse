@@ -42,9 +42,25 @@ Create directory structure, initialize settings, and optionally enable context-a
 mkdir -p docs/iterations
 mkdir -p docs/adrs
 mkdir -p .claude/iterative-dev
+mkdir -p .claude/commands/iterative-dev
 ```
 
-### 4. Create manifest
+### 4. Install workflow commands
+
+Copy command templates from the plugin to the project's `.claude/commands/` directory:
+
+```
+${CLAUDE_PLUGIN_ROOT}/templates/commands/iterative-dev.md    → .claude/commands/iterative-dev.md
+${CLAUDE_PLUGIN_ROOT}/templates/commands/iterative-dev/save.md   → .claude/commands/iterative-dev/save.md
+${CLAUDE_PLUGIN_ROOT}/templates/commands/iterative-dev/resume.md → .claude/commands/iterative-dev/resume.md
+```
+
+This creates local commands:
+- `/iterative-dev` - Main workflow command
+- `/iterative-dev:save` - Save state before context clear
+- `/iterative-dev:resume` - Resume from saved state
+
+### 5. Create manifest
 
 Write `.claude/iterative-dev/manifest.yaml`:
 ```yaml
@@ -77,7 +93,7 @@ settings:
     level: advisory  # advisory | strict
 ```
 
-### 5. Create settings file
+### 6. Create settings file
 
 Write `.claude/iterative-dev/settings.local.md`:
 ```yaml
@@ -133,7 +149,7 @@ Detects incomplete implementations:
 - Placeholder return values
 ```
 
-### 6. Create or update CLAUDE.md
+### 7. Create or update CLAUDE.md
 
 **If CLAUDE.md doesn't exist**, create it:
 
@@ -271,7 +287,7 @@ tests/                  # Integration tests
 
 **If CLAUDE.md exists**, append iterative-dev section at the end.
 
-### 7. Install per-project hooks (if --with-state-tracking)
+### 8. Install per-project hooks (if --with-state-tracking)
 
 If state tracking enabled, create `.claude/hooks.json`:
 ```json
@@ -315,11 +331,11 @@ If state tracking enabled, create `.claude/hooks.json`:
 }
 ```
 
-### 8. Detect test framework
+### 9. Detect test framework
 
 Run framework detection and update settings if found.
 
-### 9. Display completion
+### 10. Display completion
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -329,7 +345,13 @@ Created:
   ✓ docs/iterations/          (feature iterations)
   ✓ docs/adrs/                (architecture decisions)
   ✓ .claude/iterative-dev/    (plugin state)
+  ✓ .claude/commands/         (workflow commands)
   ✓ CLAUDE.md                 (project context)
+
+Commands installed:
+  /iterative-dev        - Start/continue feature development
+  /iterative-dev:save   - Save state before context clear
+  /iterative-dev:resume - Resume from saved state
 
 Detected:
   - Project: <name>
