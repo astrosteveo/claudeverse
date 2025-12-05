@@ -5,28 +5,6 @@
   },
   "plugins": [
     {
-      "name": "tdd-plugin",
-      "source": "./plugins/tdd-plugin",
-      "description": "Enforces Spec and Test Driven Development workflows with PRD creation, technical specifications, functional requirements documentation, test-first development, and automated validation hooks",
-      "version": "0.1.0",
-      "author": {
-        "name": "AstroSteveo",
-        "email": "astrosteveo@noreply.githubusers.com"
-      },
-      "license": "MIT",
-      "keywords": [
-        "tdd",
-        "test-driven-development",
-        "specification",
-        "testing",
-        "workflow",
-        "quality",
-        "documentation",
-        "coverage"
-      ],
-      "category": "development"
-    },
-    {
       "name": "iterative-dev",
       "source": "./plugins/iterative-dev",
       "description": "Spec-driven, test-driven, iterative development framework with MVP-first thinking, context-aware state preservation, and anti-stubbing enforcement. Complete developer lifecycle from idea to shipping.",
