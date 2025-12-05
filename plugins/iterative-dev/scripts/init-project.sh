@@ -85,6 +85,11 @@ mkdir -p .claude/commands/iterative-dev
 ln -sf "$PLUGIN_ROOT/templates/commands/iterative-dev.md" ".claude/commands/iterative-dev.md"
 ln -sf "$PLUGIN_ROOT/templates/commands/iterative-dev/save.md" ".claude/commands/iterative-dev/save.md"
 ln -sf "$PLUGIN_ROOT/templates/commands/iterative-dev/resume.md" ".claude/commands/iterative-dev/resume.md"
+ln -sf "$PLUGIN_ROOT/templates/commands/iterative-dev/adr.md" ".claude/commands/iterative-dev/adr.md"
+
+# Symlink skills
+mkdir -p .claude/skills
+ln -sf "$PLUGIN_ROOT/templates/skills/iterative-practices" ".claude/skills/iterative-practices"
 
 # Create manifest.yaml
 cat > .claude/iterative-dev/manifest.yaml << EOF
@@ -219,12 +224,14 @@ Created:
   ✓ docs/adrs/                (architecture decisions)
   ✓ .claude/iterative-dev/    (plugin state)
   ✓ .claude/commands/         (workflow commands)
+  ✓ .claude/skills/           (methodology guidance)
   ✓ CLAUDE.md                 (project context)
 
 Commands installed (symlinked):
   /iterative-dev        - Start/continue feature development
   /iterative-dev:save   - Save state before context clear
   /iterative-dev:resume - Resume from saved state
+  /iterative-dev:adr    - Create architecture decision record
 
 Detected:
   - Project: $PROJECT_NAME

@@ -39,9 +39,23 @@ This skill provides guidance on the iterative-dev methodology: a spec-driven, te
 
 **Key Documents**:
 - **Vision**: Problem statement and success criteria
-- **MVP Scope**: What's in/out for this iteration
+- **MVP Scope**: What's in/out for this iteration + Research Findings
 - **Requirements**: FR-XXX with Given-When-Then criteria
-- **ADRs**: Architecture decisions and rationale
+- **ADRs**: Cross-cutting architecture decisions (rare - see below)
+
+### When to Use ADRs vs Research Findings
+
+**Research Findings** (in scope doc) - use for:
+- Library/dependency choices within a feature
+- Best practices discovered during research
+- Codebase patterns to follow
+- Most day-to-day decisions
+
+**ADRs** - use only for:
+- Cross-cutting decisions affecting multiple features
+- Changing existing architectural patterns
+- Reversing previous architectural choices
+- Decisions future contributors need to understand
 
 ### Test-Driven Development (TDD)
 
@@ -104,12 +118,23 @@ Ask:
 ### Phase 2: MVP Scope
 **Goal**: Define minimum viable scope
 
-Ask:
+**Research first** (CRITICAL):
+- Use WebSearch for current best practices and libraries
+- Use Explore agent for codebase patterns
+- Verify dependencies are current/maintained
+- **Do NOT recommend based on training data alone**
+
+**If research reveals complexity**:
+- Multiple viable approaches → trigger `EnterPlanMode`
+- Work through trade-offs before committing to scope
+- Skip for simple features with obvious implementations
+
+Then ask:
 - What's the minimum to prove value?
 - What can we defer?
 - Can we complete this in one session?
 
-**Output**: `scope-v<N>.md`
+**Output**: `scope-v<N>.md` with Research Findings section
 
 ### Phase 3: Specification
 **Goal**: Create testable requirements
@@ -300,7 +325,7 @@ After `/clear`, run `/iterative-dev:resume` to:
 | `/iterative-dev:init` | Initialize project |
 | `/iterative-dev:save` | Save state manually |
 | `/iterative-dev:resume` | Resume from state |
-| `/iterative-dev:check` | Compliance report |
+| `/iterative-dev:adr <title>` | Create architecture decision record |
 
 ### Key Locations
 

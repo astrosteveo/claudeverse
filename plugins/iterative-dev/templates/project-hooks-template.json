@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PROJECT_ROOT}/.claude/iterative-dev/scripts/update-claude-md.sh\" 2>/dev/null || true",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/update-claude-md.sh\" 2>/dev/null || true",
             "timeout": 10
           }
         ]

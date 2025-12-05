@@ -11,6 +11,7 @@ allowed-tools:
   - TodoWrite
   - Task
   - SlashCommand
+  - WebSearch
 ---
 
 # Iterative Development Workflow
@@ -98,13 +99,23 @@ Guide feature development using a spec-driven, test-driven, MVP-first methodolog
 ### Actions
 
 1. **Present the full problem** from vision document
-2. **Ask MVP-defining questions**:
+2. **Research before recommending** (CRITICAL):
+   - Use WebSearch to find current best practices, libraries, and approaches for this problem domain
+   - Use the Explore agent to understand existing codebase patterns and conventions
+   - If external dependencies are involved (crates, packages, libraries), search for current/maintained options
+   - Document findings: what's current, what's deprecated, what the community recommends
+   - **Do NOT make recommendations based on training data alone** - verify with live research
+3. **If research reveals architectural complexity**:
+   - Multiple viable approaches with significant trade-offs → use `EnterPlanMode` to work through options
+   - Present findings to user: "Research found X approaches - should we plan through these before scoping?"
+   - Skip this for simple features with obvious implementations
+4. **Ask MVP-defining questions**:
    - "What is the absolute minimum that would prove this is solvable?"
    - "What can you explicitly defer to later iterations?"
    - "Can this be completed in a single session?"
-3. **Generate 2-3 MVP scope options** if helpful
-4. **User selects or refines** MVP scope
-5. **Document explicit deferrals** - what is NOT in this iteration
+5. **Generate 2-3 MVP scope options** informed by research findings
+6. **User selects or refines** MVP scope
+7. **Document explicit deferrals** - what is NOT in this iteration
 
 ### Artifacts Created
 
@@ -285,8 +296,14 @@ Guide feature development using a spec-driven, test-driven, MVP-first methodolog
    - Scan for TODO, FIXME, NotImplementedError
    - Scan for placeholder returns (return null, return {})
    - If found, must complete before proceeding
-4. **Architecture decisions**:
-   - If significant decision needed, create ADR:
+4. **Architecture decisions** (rare - most decisions belong in scope doc):
+   - Create ADR only for **cross-cutting decisions** affecting multiple features
+   - Single-feature library choices → document in scope doc's Research Findings
+   - ADR triggers:
+     - Changing an existing architectural pattern
+     - Decision affects code beyond this feature
+     - Reversing a previous architectural choice
+   - If needed:
      ```
      /iterative-dev:adr <decision-title>
      ```
@@ -522,4 +539,3 @@ User can run `/iterative-dev:save` at any time.
 - `/iterative-dev:save` - Manual state checkpoint
 - `/iterative-dev:resume` - Resume from saved state
 - `/iterative-dev:adr` - Create architecture decision record
-- `/iterative-dev:check` - Compliance and coverage report

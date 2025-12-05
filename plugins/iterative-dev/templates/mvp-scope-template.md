@@ -16,6 +16,29 @@ What's the ONE thing this iteration must do to prove the concept works?
 
 ---
 
+## Research Findings
+
+Summary of research conducted before scoping (do NOT skip this section):
+
+### Current Best Practices
+- [What the community/industry currently recommends]
+
+### Libraries/Dependencies Evaluated
+| Option | Status | Last Updated | Notes |
+|--------|--------|--------------|-------|
+| [Library 1] | [Active/Deprecated/Unmaintained] | [Date] | [Why chosen/rejected] |
+| [Library 2] | [Active/Deprecated/Unmaintained] | [Date] | [Why chosen/rejected] |
+
+### Codebase Patterns
+- [Existing patterns in this codebase that we should follow]
+- [Conventions already established]
+
+### Key Decisions from Research
+- [Decision 1]: [Rationale based on research]
+- [Decision 2]: [Rationale based on research]
+
+---
+
 ## MVP Definition
 
 ### In Scope (Must Have)
