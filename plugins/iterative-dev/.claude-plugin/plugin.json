@@ -1,0 +1,22 @@
+{
+  "name": "iterative-dev",
+  "version": "0.1.0",
+  "description": "Spec-driven, test-driven, iterative development framework with MVP-first thinking, context-aware state preservation, and anti-stubbing enforcement",
+  "author": {
+    "name": "Claude Code Community",
+    "email": "community@claude.ai"
+  },
+  "keywords": [
+    "iterative",
+    "tdd",
+    "test-driven-development",
+    "spec-driven",
+    "mvp",
+    "specification",
+    "workflow",
+    "agile",
+    "incremental",
+    "state-preservation"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before writing or editing code, check iterative-dev state:\n\n1. Identify file being modified: {{tool_input.file_path}}\n2. Check if it's in exemptions (scripts/, docs/, *.config.*) - if so, allow\n3. Check for active iteration in .claude/iterative-dev/active-iteration.yaml\n4. If active iteration exists:\n   a. Check current phase - if before Phase 5 (Implementation), warn that tests should exist\n   b. Determine test file path by convention and check if exists\n5. Read .claude/iterative-dev/settings.local.md for enforcementLevel\n6. If test missing and in Implementation phase:\n   - advisory: Show brief warning, allow operation\n   - strict: Block with message suggesting /iterative-dev to continue workflow\n7. Check for stubs in file being edited - warn if adding TODO/FIXME\n\nKeep response concise. One line for warnings.",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Load iterative-dev context silently:\n\n1. Check .claude/iterative-dev/session-state.yaml - if exists:\n   Display: \"⚠️ Saved state found: <feature> Phase <N> | /iterative-dev:resume to continue\"\n2. Otherwise check .claude/iterative-dev/active-iteration.yaml - if exists:\n   Display: \"Active: <feature> Phase <N>/8 | /iterative-dev to continue\"\n3. Check .claude/iterative-dev/settings.local.md for settings\n\nKeep output minimal or silent if no active work.",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/update-claude-md.sh\" 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

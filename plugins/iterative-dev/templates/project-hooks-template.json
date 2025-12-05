@@ -1,0 +1,39 @@
+{
+  "_comment": "Per-project hooks for iterative-dev with state tracking. Install to .claude/hooks.json",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Iterative-dev check: 1) Is there an active iteration? 2) Are we in Implementation phase (5)? 3) Do tests exist for this file? 4) Is context usage high (consider /iterative-dev:save)? Keep response to one line.",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check .claude/iterative-dev/session-state.yaml for saved state and .claude/iterative-dev/active-iteration.yaml for active work. If found, display status and suggest resume. Keep minimal.",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_ROOT}/.claude/iterative-dev/scripts/update-claude-md.sh\" 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
