@@ -2,6 +2,10 @@
   "name": "backlog",
   "version": "1.0.0",
   "description": "Lightweight story-based backlog tracking with state persistence, dependency management, and anti-stubbing enforcement",
-  "author": "astrosteveo",
-  "keywords": ["backlog", "kanban", "state", "persistence", "stubs", "agile"]
+  "author": {
+    "name": "AstroSteveo",
+    "email": "astrosteveo@noreply.githubusers.com"
+  },
+  "keywords": ["backlog", "kanban", "state", "persistence", "stubs", "agile"],
+  "license": "MIT"
 }
