@@ -21,7 +21,13 @@ Lightweight story-based backlog tracking for Claude Code with state persistence 
 # Initialize backlog in your project
 /backlog:init
 
-# Add stories
+# Got a rough idea? Talk it through first
+/backlog:idea "What if we added multiplayer?"
+
+# Ready to build? Break it into stories
+/backlog:plan "User authentication with OAuth"
+
+# Or add stories manually
 /backlog:add "User authentication" --effort r5
 
 # Start working
@@ -37,12 +43,29 @@ Lightweight story-based backlog tracking for Claude Code with state persistence 
 /backlog:resume
 ```
 
+## Workflow
+
+```
+/backlog:vision  →  /backlog:idea  →  /backlog:plan  →  /backlog:add
+  "The dream"       "What if..."      "Let's do it"    "Here's the work"
+```
+
+- **vision**: Capture the big picture, evolve it over time as you learn
+- **idea**: Explore a specific idea within that vision
+- **plan**: Break a validated feature into stories with dependencies
+- **add**: Manually add individual stories
+
+For big projects where you don't know everything upfront, start with vision and discover the rest collaboratively.
+
 ## Commands
 
 | Command | Description |
 |---------|-------------|
 | `/backlog` | View current backlog grouped by status |
 | `/backlog:init` | Initialize backlog in project |
+| `/backlog:vision` | Capture & evolve your project's big-picture vision |
+| `/backlog:idea <idea>` | Explore & validate an idea before committing |
+| `/backlog:plan <feature>` | Break down a validated feature into stories |
 | `/backlog:add <title> [--effort r3\|r5\|r9]` | Add a new story |
 | `/backlog:start <id>` | Mark story as in-progress |
 | `/backlog:done <id>` | Mark story as done (runs stub check) |
