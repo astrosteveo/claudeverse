@@ -28,6 +28,30 @@
         "anti-stubbing"
       ],
       "category": "development"
+    },
+    {
+      "name": "backlog",
+      "source": "./plugins/backlog",
+      "description": "Lightweight story-based backlog tracking with state persistence across sessions, dependency management, and anti-stubbing enforcement. Agile/Kanban-style workflow without rigid phases.",
+      "version": "1.0.0",
+      "author": {
+        "name": "AstroSteveo",
+        "email": "astrosteveo@noreply.githubusers.com"
+      },
+      "license": "MIT",
+      "keywords": [
+        "backlog",
+        "kanban",
+        "agile",
+        "state-persistence",
+        "stories",
+        "tasks",
+        "dependencies",
+        "blockers",
+        "anti-stubbing",
+        "session-resume"
+      ],
+      "category": "development"
     }
   ]
 }
